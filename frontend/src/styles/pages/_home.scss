@@ -1,0 +1,44 @@
+@import '../abstract/_variables.scss';
+
+.section {
+  margin-top: $margin-xl;
+}
+
+.shop {
+  grid-column: center-start/center-end;
+
+  & > .heading--3 {
+    margin-bottom: $margin-sm;
+  }
+}
+
+.about {
+  grid-column: center-start/center-end;
+
+  display: flex;
+
+  &__content {
+    align-self: center;
+    flex: 1;
+    text-align: center;
+  }
+  &__heading {
+    font-size: 1.6rem;
+    color: $color-secondary;
+    display: inline-block;
+    border-bottom: 1px solid $color-secondary;
+    padding: $padding-xxs 0;
+  }
+
+  &__text {
+    font-size: 3.2rem;
+
+    &:first-of-type {
+      margin-top: $margin-xs;
+    }
+
+    &:last-of-type {
+      margin-bottom: $margin-md;
+    }
+  }
+}

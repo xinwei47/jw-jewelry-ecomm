@@ -1,3 +1,5 @@
+import '../styles/components/_banner.scss';
+
 const Banner = (props) => {
   return (
     <div className='banner'>

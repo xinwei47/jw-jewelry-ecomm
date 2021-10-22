@@ -1,5 +1,13 @@
+import '../styles/components/_button.scss';
+
 const Button = (props) => {
-  return <button onClick={props.onClick}>{props.children}</button>;
+  const className = `btn ${props.className}`;
+
+  return (
+    <button className={className} onClick={props.onClick} type={props.type}>
+      {props.children}
+    </button>
+  );
 };
 
 export default Button;

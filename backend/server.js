@@ -14,8 +14,21 @@ app.use(express.urlencoded({ extended: true }));
 // express.json() is a method inbuilt in express to recognize the incoming Request Object as a JSON Object.
 app.use(express.json());
 
-app.get('/shop', async (req, res) => {
-  const products = await Product.find({});
+// app.get('/shop', (req, res) => {
+// });
+
+app.get('/shop/:category', async (req, res) => {
+  const category = req.params.category;
+  console.log(req.query);
+
+  let products;
+  if (category === 'all') {
+    products = await Product.find({});
+  } else {
+    products = await Product.find({ category });
+  }
+
+  // console.log(products);
   res.json(products);
 });
 

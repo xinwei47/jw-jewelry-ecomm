@@ -1,0 +1,12 @@
+@import '../abstract/variables.scss';
+
+.footer {
+  margin-top: $margin-md;
+  grid-column: full-start/full-end;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: $color-white;
+  text-align: center;
+  padding: $padding-xs;
+  background-color: $color-primary;
+}

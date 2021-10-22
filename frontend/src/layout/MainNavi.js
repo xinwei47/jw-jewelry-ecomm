@@ -1,30 +1,33 @@
 import { NavLink, Link } from 'react-router-dom';
+import '../styles/layout/_mainnavi.scss';
 
 const MainNavi = () => {
   return (
-    <header className='header'>
-      <Link className='nav__logo-link' to='/'>
-        <h1 className='nav__logo'>JW Jewelry</h1>
-      </Link>
-      <nav className='nav'>
-        <ul className='nav__list'>
-          <li className='nav__item'>
-            <NavLink className='nav__link' to='/shop'>
+    <header className='nav'>
+      <div className='nav__logo'>
+        <Link className='nav__logo-link' to='/'>
+          <h1 className='nav__logo-text'>JW</h1>
+        </Link>
+      </div>
+      <nav className='nav__menu'>
+        <ul className='nav__menu-list'>
+          <li className='nav__menu-item'>
+            <NavLink className='nav__menu-link' to='/shop/all'>
               Shop
             </NavLink>
           </li>
-          <li className='nav__item'>
-            <NavLink className='nav__link' to='/about'>
+          <li className='nav__menu-item'>
+            <NavLink className='nav__menu-link' to='/about'>
               About
             </NavLink>
           </li>
-          <li className='nav__item'>
-            <NavLink className='nav__link' to='/sign-in'>
+          <li className='nav__menu-item'>
+            <NavLink className='nav__menu-link' to='/sign-in'>
               Sign In/Up
             </NavLink>
           </li>
-          <li className='nav__item'>
-            <NavLink className='nav__link' to='/cart'>
+          <li className='nav__menu-item'>
+            <NavLink className='nav__menu-link' to='/cart'>
               Cart
             </NavLink>
           </li>

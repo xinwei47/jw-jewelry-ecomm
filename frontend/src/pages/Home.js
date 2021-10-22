@@ -1,40 +1,86 @@
 import Banner from '../UI/Banner';
 import Button from '../UI/Button';
-import CategoryGallery from '../components/CategoryGallery';
+import Gallery from '../components/Gallery';
+
+import '../styles/pages/_home.scss';
+
+const categories = [
+  {
+    id: 'c1',
+    name: 'earrings',
+    image:
+      'https://images.unsplash.com/photo-1600721391776-b5cd0e0048f9?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8ZWFycmluZ3N8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60',
+    numOfItems: 20,
+  },
+  {
+    id: 'c2',
+    name: 'necklaces',
+    image:
+      'https://images.unsplash.com/photo-1611652022419-a9419f74343d?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8bmVja2xhY2V8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60',
+    numOfItems: 20,
+  },
+  {
+    id: 'c3',
+    name: 'rings',
+    image:
+      'https://images.unsplash.com/photo-1620916297506-4a1df16ef17a?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTF8fHJpbmdzfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60',
+    numOfItems: 20,
+  },
+  {
+    id: 'c4',
+    name: 'bracelets',
+    image:
+      'https://images.unsplash.com/photo-1608543837770-dbad30f0e7c9?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8YnJhY2VsZXRzfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60',
+    numOfItems: 20,
+  },
+  {
+    id: 'c5',
+    name: 'Wedding',
+    image:
+      'https://images.unsplash.com/photo-1481980235850-66e47651e431?ixid=MnwxMjA3fDB8MHxzZWFyY2h8NHx8d2VkZGluZyUyMGpld2Vscnl8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60',
+    numOfItems: 20,
+  },
+  {
+    id: 'c6',
+    name: "Men's",
+    image:
+      'https://images.unsplash.com/photo-1565206077202-14752579e787?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MjAwfHxtZW4lMjByaW5nfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60',
+    numOfItems: 20,
+  },
+];
 
 const Home = () => {
   const shopBtnClickHandler = () => {};
   const aboutBtnClickHandler = () => {};
   return (
     <>
-      <section>
-        <Banner src='https://images.unsplash.com/photo-1620656798579-1984d9e87df7?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1170&q=80'>
-          <h1>Jewelry designed for every day.</h1>
-          <Button onClick={shopBtnClickHandler}>SHOP ALL</Button>
-        </Banner>
+      <Banner src='https://images.unsplash.com/photo-1620656798579-1984d9e87df7?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1170&q=80'>
+        <h1 className='heading--1'>Jewelry designed for every day.</h1>
+        <Button className='btn-primary' onClick={shopBtnClickHandler}>
+          SHOP ALL
+        </Button>
+      </Banner>
+
+      <section className='section shop'>
+        <h3 className='heading--3'>Shop Jewelry By Category</h3>
+        <Gallery items={categories} />
       </section>
 
-      <hr />
-
-      <section>
-        <h2>Shop Jewelry By Category</h2>
-        <CategoryGallery />
-      </section>
-
-      <hr />
-
-      <section>
-        <h2>About</h2>
-        <div>
+      <section className='section about'>
+        <div className='about__img-container'>
           <img
             src='https://images.unsplash.com/photo-1608508644127-ba99d7732fee?ixid=MnwxMjA3fDB8MHxzZWFyY2h8NHx8ZWFycmluZ3N8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'
             alt=''
           />
         </div>
-        <div>
-          <h3>Ethically made. Designed to last.</h3>
+        <div className='about__content'>
+          <h3 className='about__heading'>About</h3>
+          <p className='about__text'>Ethically made.</p>
+          <p className='about__text'>Designed to last.</p>
+          <Button className='btn-primary' onClick={aboutBtnClickHandler}>
+            Learn more
+          </Button>
         </div>
-        <Button onClick={aboutBtnClickHandler}>Learn more</Button>
       </section>
     </>
   );

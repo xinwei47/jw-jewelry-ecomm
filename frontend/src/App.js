@@ -7,7 +7,7 @@ import About from './pages/About';
 import Auth from './pages/Auth';
 import Cart from './pages/Cart';
 
-import './App.css';
+import './App.scss';
 
 function App() {
   return (
@@ -17,7 +17,7 @@ function App() {
           <Home />
         </Route>
 
-        <Route path='/shop'>
+        <Route path='/shop/:category'>
           <Products />
         </Route>
 

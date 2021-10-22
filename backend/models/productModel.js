@@ -6,6 +6,7 @@ const productSchema = new Schema({
   user: {
     type: Schema.Types.ObjectId,
     ref: 'User',
+    // required: true,
   },
   name: {
     type: String,
@@ -15,11 +16,18 @@ const productSchema = new Schema({
     type: String,
     required: true,
   },
-  image: {
-    data: Buffer,
-    contentType: String,
-    // required: true,
+  material: {
+    type: String,
+    required: true,
   },
+  image: [
+    {
+      type: String,
+      // data: Buffer,
+      // contentType: String,
+      // required: true,
+    },
+  ],
   description: {
     type: String,
     required: true,

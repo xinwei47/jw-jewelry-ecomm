@@ -1,0 +1,49 @@
+@import '../abstract/variables.scss';
+
+.nav {
+  grid-column: center-start/center-end;
+  padding: $padding-xs 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: $color-white;
+
+  &__logo {
+  }
+  &__logo-link {
+    text-decoration: none;
+
+    &:link,
+    &:visited,
+    &:active {
+      color: $color-primary;
+    }
+  }
+  &__logo-text {
+  }
+  &__menu {
+  }
+  &__menu-list {
+    font-size: 1.6rem;
+    list-style: none;
+    display: flex;
+  }
+  &__menu-item {
+    &:not(&:last-child) {
+      margin-right: $margin-md;
+    }
+  }
+  &__menu-link {
+    text-decoration: none;
+
+    &:link,
+    &:visited,
+    &:active {
+      color: $color-primary;
+    }
+
+    &:hover {
+      color: $color-secondary;
+    }
+  }
+}
