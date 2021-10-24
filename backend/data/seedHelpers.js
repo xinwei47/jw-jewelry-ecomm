@@ -16,13 +16,4 @@ export const descriptors = [
   'Layed',
 ];
 
-export const categories = [
-  'ring',
-  'necklace',
-  'earrings',
-  'bracelet',
-  'wedding',
-  'men',
-];
-
 export const materials = ['Yellow Gold', 'White Gold', 'Diamond', 'Silver'];

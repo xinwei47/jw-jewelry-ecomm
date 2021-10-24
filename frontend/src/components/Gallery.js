@@ -3,11 +3,11 @@ import '../styles/components/_gallery.scss';
 
 const Gallery = (props) => {
   return (
-    <div className='gallery'>
+    <div className="gallery">
       {props.items.map((item) => {
         return (
           <Card
-            key={item.id}
+            key={item._id}
             src={item.image}
             title={item.name}
             alt={`shop by ${item.name}`}

@@ -13,8 +13,8 @@ const productSchema = new Schema({
     required: true,
   },
   category: {
-    type: String,
-    required: true,
+    type: Schema.Types.ObjectId,
+    ref: 'Category',
   },
   material: {
     type: String,

@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 const FilterInput = (props) => {
   const [filterCheckedState, setFilterCheckedState] = useState(
-    new Array(props.filterCriteria.length).fill(false)
+    new Array(props.filterType.length).fill(false)
   );
 
   const checkedStateHandler = (index) => {
@@ -12,16 +12,17 @@ const FilterInput = (props) => {
   };
 
   props.onFilterInputData(filterCheckedState);
+  // console.log(filterCheckedState); //[true, false, false, false]
 
   return (
     <>
-      <legend className='heading--4'>{props.filterName}</legend>
+      <legend className="heading--4">{props.filterName}</legend>
 
-      {props.filterCriteria.map((filter, index) => {
+      {props.filterType.map((filter, index) => {
         return (
-          <div>
+          <div key={`${props.filterName}-${index}`}>
             <input
-              type='checkbox'
+              type="checkbox"
               id={`${props.filterName}-checkbox-${index}`}
               name={filter}
               value={filter}
