@@ -1,9 +1,8 @@
 import Card from './Card';
-import '../styles/components/_gallery.scss';
 
 const Gallery = (props) => {
   return (
-    <div className="gallery">
+    <div className={props.className}>
       {props.items.map((item) => {
         return (
           <Card

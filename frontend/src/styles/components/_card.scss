@@ -1,6 +1,7 @@
 @import '../abstract/variables.scss';
 
 .card {
+  width: 100%;
   cursor: pointer;
   &__img-container {
     width: 320px;

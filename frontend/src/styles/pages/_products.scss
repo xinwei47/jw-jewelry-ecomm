@@ -1,3 +1,21 @@
+@import '../abstract/variables.scss';
+
 .products {
-  grid-column: center-start/center-end;
+  grid-column: full-start/full-end;
+
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+
+  &__sidebar {
+  }
+  &__content {
+    grid-column: 2/5;
+  }
+  &__count {
+  }
+  &__gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, 280px);
+    gap: $grid-gap-xs;
+  }
 }

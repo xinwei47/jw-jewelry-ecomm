@@ -1,0 +1,20 @@
+@import '../abstract/variables.scss';
+
+.filter {
+  &:not(:last-of-type) {
+    margin-top: $margin-sm;
+  }
+
+  &__heading {
+    font-weight: 700;
+    text-transform: capitalize;
+  }
+  &__item {
+    margin-top: $margin-xxs;
+  }
+  &__input {
+    margin-right: $margin-xxs;
+  }
+  &__label {
+  }
+}

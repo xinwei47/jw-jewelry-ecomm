@@ -17,25 +17,25 @@ app.use(express.json());
 
 app.get('/shop/:category', async (req, res) => {
   const category = req.params.category;
-  console.log('***request parameter***');
-  console.log(`category: ${category}`);
   const paramObj = req.query;
+  // console.log('***request parameter***');
+  // console.log(`category: ${category}`);
   console.log(paramObj);
-  console.log('******');
+  // console.log('******');
 
   let products;
   if (category === 'all') {
     products = await Product.find({ ...paramObj });
   } else {
     const { _id: categoryId } = await Category.findOne({ name: category });
-    console.log(`categoryId: ${categoryId}`);
+    // console.log(`categoryId: ${categoryId}`);
     products = await Product.find({
       category: categoryId,
       ...paramObj,
     });
   }
 
-  // console.log(products);
+  // console.log(products[0].priceTier); // '100-200'
   res.json(products);
 });
 

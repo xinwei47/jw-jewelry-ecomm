@@ -20,7 +20,7 @@ const importData = async () => {
     for (let i = 0; i < 100; i++) {
       const random4 = Math.floor(Math.random() * 4);
       const random6 = Math.floor(Math.random() * 6);
-      const price = Math.floor(Math.random() * 200 + 20);
+      const price = Math.floor(Math.random() * 300 + 50);
       const countInStock = Math.floor(Math.random() * 20 + 5);
       const rating = Math.floor(Math.random() * 5 + 1);
 

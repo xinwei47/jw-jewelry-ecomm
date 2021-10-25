@@ -1,0 +1,26 @@
+@import '../abstract/variables.scss';
+
+.sub-navi {
+  list-style: none;
+
+  &__item {
+    cursor: pointer;
+    &:not(:first-child) {
+      margin-top: $margin-xxs;
+    }
+  }
+  &__link {
+    text-decoration: none;
+    text-transform: capitalize;
+
+    &:link,
+    &:visited,
+    &:active {
+      color: $color-primary;
+    }
+
+    &:hover {
+      color: $color-secondary;
+    }
+  }
+}

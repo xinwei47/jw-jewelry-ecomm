@@ -9,15 +9,13 @@ import '../styles/pages/_products.scss';
 
 const Products = () => {
   const { category } = useParams();
-  // const history = useHistory();
+  const history = useHistory();
 
   const [products, setProducts] = useState([]);
   const [productsCount, setProductsCount] = useState();
-
   const [categories, setCategories] = useState([]);
 
-  // ****** fetch data ******
-
+  // ****** fetch data from db ******
   const fetchProducts = useCallback(async (category, params = {}) => {
     const { data } = await axios.get(`/shop/${category}`, {
       params,
@@ -30,17 +28,32 @@ const Products = () => {
 
   const fetchCategories = useCallback(async () => {
     const { data } = await axios.get('/categories');
-
     setCategories(data);
   }, []);
-
   // ******************
+
+  // ******************************************************
+  // *** Reformating filter results to param string ***
+  const reformatFilterResults = (obj) => {
+    return Object.keys(obj).map((key) => {
+      return obj[key].map((item) => {
+        return `${key}=${item}`.toLowerCase().replace(/\s/g, '-');
+      });
+    });
+  };
+  // ******************************************************
 
   const submittedFilterResultsHandler = useCallback(
     async (filterParams) => {
       if (filterParams) {
         console.log(filterParams);
-        fetchProducts(category, filterParams);
+
+        const paramArr = reformatFilterResults(filterParams).flat();
+        const queryString = paramArr.flat().join('&');
+        console.log(queryString);
+
+        history.push(`/shop/${category}?${queryString}`);
+        await fetchProducts(category, filterParams);
       }
     },
     [fetchProducts, category]
@@ -54,21 +67,19 @@ const Products = () => {
     fetchCategories();
   }, [fetchCategories]);
 
-  useEffect(() => {
-    submittedFilterResultsHandler();
-  }, [submittedFilterResultsHandler]);
-
   return (
-    <div className="products">
+    <div className='products'>
       {/* breadcrumb */}
       {/* sidebar */}
       <Sidebar
+        className='products__sidebar'
         menuList={categories}
         onFiltersSubmittedData={submittedFilterResultsHandler}
       />
-
-      <p>{productsCount} items</p>
-      <Gallery items={products} />
+      <div className='products__content'>
+        <p className='products__count'>{productsCount} items</p>
+        <Gallery className='products__gallery' items={products} />
+      </div>
     </div>
   );
 };
