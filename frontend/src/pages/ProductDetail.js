@@ -1,11 +1,13 @@
-import { useEffect } from 'react';
+import { useEffect, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import { fetchSingleProduct } from '../lib/api';
 import useHttp from '../hooks/use-http';
-
+import CartContext from '../store/cart-context';
 import '../styles/pages/_product-detail.scss';
 
 const ProductDetail = () => {
+  const cartCtx = useContext(CartContext);
+
   const { productName, productId } = useParams();
 
   const {
@@ -14,9 +16,9 @@ const ProductDetail = () => {
     data: product,
   } = useHttp(fetchSingleProduct);
 
-  const { image, name, rating, material, description } = product;
+  const { image, name, rating, price, material, description } = product;
 
-  console.log(product);
+  // console.log(product);
 
   useEffect(() => {
     singleProductRequest(productName, productId);
@@ -34,6 +36,7 @@ const ProductDetail = () => {
           <div className='product__rating'>
             {/* stars */}
             <p className='product__rating-text'>{rating}</p>
+            <p className='product__price-text'>${price}</p>
             <a href='#reviews' className='product__view-reviews'>
               See 20 Reviews
             </a>
@@ -42,6 +45,15 @@ const ProductDetail = () => {
           <div className='product__description'>
             <h4 className='product__description-heading'>Description</h4>
             <div className='product__description-text'>{description}</div>
+          </div>
+          <div className='product__actions'>
+            <button
+              className='btn btn-primary'
+              // onClick={() => cartCtx.onAddItem(prodId, name, price)}
+              onClick={() => cartCtx.onAddItem(product)}
+            >
+              Add to Cart
+            </button>
           </div>
         </div>
       </div>

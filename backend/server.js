@@ -11,6 +11,7 @@ import Product from './models/productModel.js';
 import Category from './models/categoryModel.js';
 import User from './models/userModel.js';
 import generateToken from './utils/generateToken.js';
+import cleanUserFn from './utils/cleanUserData.js';
 
 dotenv.config();
 connectDB(); // connect to mongoDB
@@ -46,13 +47,13 @@ app.use(
 // configure passport
 app.use(passport.initialize()); // 'passport.initializer()' middleware is required to initialize passport in an Express-based app
 app.use(passport.session());
+
+passport.serializeUser(User.serializeUser()); // 'serialization' tells how to store the data in a session
+passport.deserializeUser(User.deserializeUser()); // 'deserialization' tells how to un-store the data in a session
+// confiture passport local strategy
 passport.use(
   new LocalStrategy({ usernameField: 'email' }, User.authenticate())
 );
-passport.serializeUser(User.serializeUser()); // 'serialization' tells how to store the data in a session
-passport.deserializeUser(User.deserializeUser()); // 'deserialization' tells how to un-store the data in a session
-
-// ================================================
 // configure passport-jwt strategy
 const JwtStrategy = passportjwt.Strategy;
 const ExtractJwt = passportjwt.ExtractJwt;
@@ -78,21 +79,8 @@ passport.use(
     });
   })
 );
-// ================================================
 
-// ****************************
-// Helper function
-const cleanUserFn = (reqUserData) => {
-  const user = JSON.parse(JSON.stringify(reqUserData)); // hack to copy the req.user inro a new object
-  const cleanUser = Object.assign({}, user);
-  delete cleanUser.hash;
-  delete cleanUser.salt;
-  return cleanUser;
-};
-
-// ****************************
-
-// Routes
+// ****** Routes ******
 // product routes
 app.get('/shop/products/:productName/:productId', async (req, res) => {
   const { productId } = req.params;
@@ -129,7 +117,7 @@ app.get('/categories', async (req, res) => {
 
 app.get(
   '/profile',
-  // passport.authenticate will trigger the jwt strategy and return the founded user data
+  // the line of code below will trigger the passport jwt strategy and return the founded user data
   passport.authenticate('jwt', { session: false }),
   async (req, res) => {
     // console.log(req.headers.authorization); // receive the jwt token
@@ -201,12 +189,20 @@ app.get('/logout', (req, res) => {
   }
 });
 
+app.all('*', (req, res, next) => {
+  const error = new Error('Page is not founc.');
+  res.status(404);
+  next(error);
+});
+
 // basic error handler
 app.use((err, req, res, next) => {
-  const { statusCode = 500 } = err;
-  if (!err.message) err.message = 'Oh no, something went wrong!';
-  // res.status(statusCode).json({ error: err });
-  res.status(statusCode).send('something is wrong');
+  const statusCode = res.statusCode === 200 ? 500 : res.statusCode;
+  res.status(statusCode);
+  res.json({
+    message: err.message,
+    stack: process.env.NODE_ENV === 'production' ? null : err.stack,
+  });
 });
 
 app.listen(8000, () => {

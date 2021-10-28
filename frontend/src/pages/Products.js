@@ -47,7 +47,7 @@ const Products = () => {
   const submittedFilterResultsHandler = useCallback(
     async (filterParams) => {
       if (filterParams) {
-        console.log(filterParams);
+        // console.log(filterParams);
 
         const paramArr = reformatFilterResults(filterParams).flat();
         const queryString = paramArr.flat().join('&');
