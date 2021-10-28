@@ -1,38 +1,37 @@
-import { useCallback, useEffect, useState } from 'react';
-import axios from 'axios';
+import { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import Banner from '../UI/Banner';
 import Button from '../UI/Button';
-import Gallery from '../components/Gallery';
+import { CategoriesGallery } from '../components/Gallery';
+import { fetchCategories } from '../lib/api';
+import useHttp from '../hooks/use-http';
 
 import '../styles/pages/_home.scss';
 
 const Home = () => {
-  const [categories, setCategories] = useState([]);
-  // *** fetch Categories Data ***
-  const fetchCategories = useCallback(async () => {
-    const { data } = await axios.get('/categories');
-    setCategories(data);
-  }, []);
-  // ******
+  const {
+    sendRequest: categoriesRequest,
+    // status: categoriesStatus,
+    data: categories,
+  } = useHttp(fetchCategories);
 
   useEffect(() => {
-    fetchCategories();
-  }, [fetchCategories]);
+    categoriesRequest();
+  }, [categoriesRequest]);
 
-  const shopBtnClickHandler = () => {};
   const aboutBtnClickHandler = () => {};
   return (
     <>
       <Banner src='https://images.unsplash.com/photo-1620656798579-1984d9e87df7?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1170&q=80'>
         <h1 className='heading--1'>Jewelry designed for every day.</h1>
-        <Button className='btn-primary' onClick={shopBtnClickHandler}>
-          SHOP ALL
+        <Button className='btn-primary'>
+          <Link to='/shop/all'>SHOP ALL</Link>
         </Button>
       </Banner>
 
       <section className='section shop'>
         <h3 className='heading--3'>Shop Jewelry By Category</h3>
-        <Gallery className='shop__gallery' items={categories} />
+        <CategoriesGallery className='shop__gallery' items={categories} />
       </section>
 
       <section className='section about'>

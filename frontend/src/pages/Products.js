@@ -1,36 +1,37 @@
-import { useCallback, useState, useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
-import axios from 'axios';
 
-import Gallery from '../components/Gallery';
+import { ProductsGallery } from '../components/Gallery';
 import Sidebar from '../components/Sidebar';
+import { fetchCategories, fetchProducts } from '../lib/api';
 
 import '../styles/pages/_products.scss';
+import useHttp from '../hooks/use-http';
 
 const Products = () => {
   const { category } = useParams();
   const history = useHistory();
 
-  const [products, setProducts] = useState([]);
-  const [productsCount, setProductsCount] = useState();
-  const [categories, setCategories] = useState([]);
+  const {
+    sendRequest: categoriesRequest,
+    // status: categoriesStatus,
+    data: categories,
+  } = useHttp(fetchCategories);
 
-  // ****** fetch data from db ******
-  const fetchProducts = useCallback(async (category, params = {}) => {
-    const { data } = await axios.get(`/shop/${category}`, {
-      params,
-    });
-    console.log(data);
-    const dataCount = data.length;
-    setProducts(data);
-    setProductsCount(dataCount);
-  }, []);
+  useEffect(() => {
+    categoriesRequest();
+  }, [categoriesRequest]);
 
-  const fetchCategories = useCallback(async () => {
-    const { data } = await axios.get('/categories');
-    setCategories(data);
-  }, []);
-  // ******************
+  const {
+    sendRequest: productsRequest,
+    // status: productsStatus,
+    data: products,
+    dataLength: productsCount,
+  } = useHttp(fetchProducts);
+
+  useEffect(() => {
+    productsRequest(category);
+  }, [productsRequest, category]);
 
   // ******************************************************
   // *** Reformating filter results to param string ***
@@ -53,19 +54,11 @@ const Products = () => {
         console.log(queryString);
 
         history.push(`/shop/${category}?${queryString}`);
-        await fetchProducts(category, filterParams);
+        await productsRequest(category, filterParams);
       }
     },
-    [fetchProducts, category]
+    [category, history, productsRequest]
   );
-
-  useEffect(() => {
-    fetchProducts(category);
-  }, [fetchProducts, category]);
-
-  useEffect(() => {
-    fetchCategories();
-  }, [fetchCategories]);
 
   return (
     <div className='products'>
@@ -78,7 +71,11 @@ const Products = () => {
       />
       <div className='products__content'>
         <p className='products__count'>{productsCount} items</p>
-        <Gallery className='products__gallery' items={products} />
+        <ProductsGallery
+          className='products__gallery'
+          type='products'
+          items={products}
+        />
       </div>
     </div>
   );

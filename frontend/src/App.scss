@@ -18,6 +18,8 @@ body {
   font-size: 1.6rem;
   color: $color-primary;
   box-sizing: border-box;
+  position: relative;
+  min-height: 100vh;
 }
 
 #root {

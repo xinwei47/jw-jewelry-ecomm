@@ -3,9 +3,16 @@
 .footer {
   margin-top: $margin-md;
   grid-column: full-start/full-end;
-  font-weight: 700;
-  color: $color-white;
   text-align: center;
   padding: $padding-xs;
   background-color: $color-primary;
+
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+
+  &-text {
+    font-weight: 700;
+    color: $color-white;
+  }
 }

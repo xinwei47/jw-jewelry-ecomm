@@ -1,0 +1,47 @@
+@import '../abstract/variables.scss';
+
+.product {
+  grid-column: center-start/center-end;
+
+  &__content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: $grid-gap-xs;
+  }
+
+  &__image-container {
+    width: 100%;
+    height: 100%;
+  }
+
+  &__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    overflow: hidden;
+  }
+
+  &__right {
+  }
+
+  &__heading {
+    font-size: 2rem;
+    text-transform: capitalize;
+    letter-spacing: 3px;
+  }
+  &__rating {
+    &-text {
+    }
+  }
+  &__view-reviews {
+  }
+  &__description {
+    &-heading {
+    }
+    &-text {
+    }
+  }
+
+  &__reviews {
+  }
+}
