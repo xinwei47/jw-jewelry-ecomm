@@ -17,12 +17,17 @@ const ProductDetail = () => {
 
   const { productName, productId } = useParams();
 
-  const wishlist = JSON.parse(authCtx.wishlist);
-  const findWishlistItem = wishlist.find((item) => item === productId);
-
   let initialWishlistState;
-  if (!!findWishlistItem) initialWishlistState = true;
-  else initialWishlistState = false;
+  if (authCtx.wishlist) {
+    const findWishlistItem = authCtx.wishlist.find(
+      (item) => item === productId
+    );
+
+    if (!!findWishlistItem) initialWishlistState = true;
+    else initialWishlistState = false;
+  } else {
+    initialWishlistState = false;
+  }
 
   const [isOnWishlist, setIsOnWishlist] = useState(initialWishlistState);
   // console.log(`isOnWishlist: ${isOnWishlist}`);
@@ -88,30 +93,30 @@ const ProductDetail = () => {
   }, [singleProductRequest, productName, productId]);
 
   return (
-    <div className='product'>
-      <div className='product__content'>
-        <div className='product__image-container'>
+    <div className="product">
+      <div className="product__content">
+        <div className="product__image-container">
           <img src={image} alt={`${name}`} />
         </div>
 
-        <div className='product__right'>
-          <h1 className='product__heading'>{name}</h1>
-          <div className='product__rating'>
+        <div className="product__right">
+          <h1 className="product__heading">{name}</h1>
+          <div className="product__rating">
             {/* stars */}
-            <p className='product__rating-text'>{rating}</p>
-            <p className='product__price-text'>${price}</p>
-            <a href='#reviews' className='product__view-reviews'>
+            <p className="product__rating-text">{rating}</p>
+            <p className="product__price-text">${price}</p>
+            <a href="#reviews" className="product__view-reviews">
               See 20 Reviews
             </a>
           </div>
           <div>{material}</div>
-          <div className='product__description'>
-            <h4 className='product__description-heading'>Description</h4>
-            <div className='product__description-text'>{description}</div>
+          <div className="product__description">
+            <h4 className="product__description-heading">Description</h4>
+            <div className="product__description-text">{description}</div>
           </div>
-          <div className='product__actions'>
+          <div className="product__actions">
             <Button
-              className='btn-primary'
+              className="btn-primary"
               // onClick={() => cartCtx.onAddItem(prodId, name, price)}
               onClick={() => cartCtx.onAddItem(product)}
             >
@@ -119,12 +124,12 @@ const ProductDetail = () => {
             </Button>
             {/* wishlist actions */}
             {!isOnWishlist ? (
-              <Button className='btn-tertiary' onClick={addToWishlistHandler}>
+              <Button className="btn-tertiary" onClick={addToWishlistHandler}>
                 Add to Wishlist
               </Button>
             ) : (
               <Button
-                className='btn-tertiary'
+                className="btn-tertiary"
                 onClick={removeFromWishlistHandler}
               >
                 Remove From Wishlist
@@ -135,8 +140,8 @@ const ProductDetail = () => {
       </div>
 
       {/* display reviews */}
-      <div className='product__reviews' id='reviews'>
-        <h2 className='heading--2'>Reviews</h2>
+      <div className="product__reviews" id="reviews">
+        <h2 className="heading--2">Reviews</h2>
       </div>
     </div>
   );

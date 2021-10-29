@@ -4,7 +4,7 @@ import AuthContext from './auth-context';
 
 const AuthContextProvider = (props) => {
   const initialToken = sessionStorage.getItem('token');
-  const initialWishlist = sessionStorage.getItem('wishlist');
+  const initialWishlist = JSON.parse(sessionStorage.getItem('wishlist'));
 
   const [token, setToken] = useState(initialToken);
   const [wishlist, setWishlist] = useState(initialWishlist);
