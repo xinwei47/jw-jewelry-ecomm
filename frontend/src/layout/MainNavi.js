@@ -45,11 +45,18 @@ const MainNavi = () => {
           )}
           {/* only show logout when user is logged in */}
           {authCtx.isAuthenticated && (
-            <li className='nav__menu-item'>
-              <NavLink className='nav__menu-link' to='/profile'>
-                Profile
-              </NavLink>
-            </li>
+            <>
+              <li className='nav__menu-item'>
+                <NavLink className='nav__menu-link' to='/profile'>
+                  Profile
+                </NavLink>
+              </li>
+              <li className='nav__menu-item'>
+                <NavLink className='nav__menu-link' to='/wishlist'>
+                  Wishlist
+                </NavLink>
+              </li>
+            </>
           )}
 
           <li className='nav__menu-item'>

@@ -1,24 +1,87 @@
-import { useEffect, useContext } from 'react';
-import { useParams } from 'react-router-dom';
+import { useEffect, useContext, useState } from 'react';
+import { useParams, useHistory } from 'react-router-dom';
 import { fetchSingleProduct } from '../lib/api';
 import useHttp from '../hooks/use-http';
 import CartContext from '../store/cart-context';
+import AuthContext from '../store/auth-context';
+
+import Button from '../UI/Button';
 import '../styles/pages/_product-detail.scss';
+import axios from 'axios';
 
 const ProductDetail = () => {
+  // get the initial wishlist state from user wishlist in database
+  const authCtx = useContext(AuthContext);
   const cartCtx = useContext(CartContext);
+  const history = useHistory();
 
   const { productName, productId } = useParams();
+
+  const wishlist = JSON.parse(authCtx.wishlist);
+  const findWishlistItem = wishlist.find((item) => item === productId);
+
+  let initialWishlistState;
+  if (!!findWishlistItem) initialWishlistState = true;
+  else initialWishlistState = false;
+
+  const [isOnWishlist, setIsOnWishlist] = useState(initialWishlistState);
+  // console.log(`isOnWishlist: ${isOnWishlist}`);
 
   const {
     sendRequest: singleProductRequest,
     // status: productStatus,
     data: product,
   } = useHttp(fetchSingleProduct);
+  const {
+    // _id,
+    image,
+    name,
+    rating,
+    price,
+    material,
+    description,
+  } = product;
 
-  const { image, name, rating, price, material, description } = product;
+  const addToWishlistHandler = async () => {
+    // check if the user is logged in
+    // if yes, send the data to database
+    // if no, send user to login page
+    if (authCtx.isAuthenticated) {
+      const { data } = await axios.post(
+        '/add-to-wishlist',
+        { prodId: product._id },
+        {
+          headers: {
+            Authorization: `Bearer ${authCtx.token}`,
+          },
+        }
+      );
+      console.log(data);
+      setIsOnWishlist(true);
+      sessionStorage.setItem('wishlist', JSON.stringify(data.wishlist));
+    } else {
+      history.replace('/sign-in');
+    }
+  };
 
-  // console.log(product);
+  const removeFromWishlistHandler = async () => {
+    if (authCtx.isAuthenticated) {
+      const { data } = await axios.put(
+        '/remove-from-wishlist',
+        { prodId: product._id },
+        {
+          headers: {
+            Authorization: `Bearer ${authCtx.token}`,
+          },
+        }
+      );
+      console.log(data);
+      setIsOnWishlist(false);
+      sessionStorage.setItem('wishlist', JSON.stringify(data.wishlist));
+    } else {
+      history.replace('/sign-in');
+    }
+  };
 
   useEffect(() => {
     singleProductRequest(productName, productId);
@@ -47,13 +110,26 @@ const ProductDetail = () => {
             <div className='product__description-text'>{description}</div>
           </div>
           <div className='product__actions'>
-            <button
-              className='btn btn-primary'
+            <Button
+              className='btn-primary'
               // onClick={() => cartCtx.onAddItem(prodId, name, price)}
               onClick={() => cartCtx.onAddItem(product)}
             >
               Add to Cart
-            </button>
+            </Button>
+            {/* wishlist actions */}
+            {!isOnWishlist ? (
+              <Button className='btn-tertiary' onClick={addToWishlistHandler}>
+                Add to Wishlist
+              </Button>
+            ) : (
+              <Button
+                className='btn-tertiary'
+                onClick={removeFromWishlistHandler}
+              >
+                Remove From Wishlist
+              </Button>
+            )}
           </div>
         </div>
       </div>

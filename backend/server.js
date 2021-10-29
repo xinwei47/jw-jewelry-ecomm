@@ -189,6 +189,54 @@ app.get('/logout', (req, res) => {
   }
 });
 
+// wishlist routes
+
+app.get(
+  '/wishlist',
+  passport.authenticate('jwt', { session: false }),
+  async (req, res) => {
+    const user = await req.user.populate('wishlist');
+    const wishlist = user.wishlist;
+    res.json(wishlist);
+  }
+);
+
+app.post(
+  '/add-to-wishlist',
+  passport.authenticate('jwt', { session: false }),
+  async (req, res) => {
+    const { prodId } = req.body;
+
+    const user = req.user; // jwt strategy was triggered to find user
+    if (!user.wishlist.find((item) => item._id == prodId)) {
+      user.wishlist.push(prodId);
+      await user.save();
+      res.json(user);
+    } else {
+      res.json({ error: 'Item is already in the wishlist' });
+    }
+  }
+);
+
+app.put(
+  '/remove-from-wishlist',
+  passport.authenticate('jwt', { session: false }),
+  async (req, res) => {
+    const { prodId } = req.body;
+    const { wishlist } = req.user; // jwt strategy was triggered to find user
+
+    if (wishlist.find((item) => item._id == prodId)) {
+      const updatedWishlist = wishlist.filter((item) => item._id != prodId);
+      // by default, 'updateOne' return the document BEFORE the update
+      await req.user.updateOne({ wishlist: updatedWishlist });
+      const user = await User.findById(req.user._id);
+      res.json(user);
+    } else {
+      res.json({ error: 'Item is not in the wishlist' });
+    }
+  }
+);
+
 app.all('*', (req, res, next) => {
   const error = new Error('Page is not founc.');
   res.status(404);

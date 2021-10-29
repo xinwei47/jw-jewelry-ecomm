@@ -29,7 +29,7 @@ const cartReducer = (prevState, action) => {
     const findProd = prevState.products.find(
       (product) => product._id === action.item._id
     );
-    console.log(findProd);
+    // console.log(findProd);
     let updatedProducts;
     if (findProd.qty >= 1) {
       findProd.qty -= 1;
@@ -70,8 +70,6 @@ const CartContextProvider = (props) => {
     // console.log(item);
     cartDispatch({ type: 'REMOVE_ITEM', item });
   };
-
-  console.log(cartState);
 
   const cartContextValue = {
     products: cartState.products,

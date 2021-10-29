@@ -13,7 +13,14 @@ const userSchema = new Schema({
     required: true,
     default: false,
   },
+  // only admin has right to create products
   products: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Product',
+    },
+  ],
+  wishlist: [
     {
       type: Schema.Types.ObjectId,
       ref: 'Product',
@@ -25,10 +32,12 @@ const userSchema = new Schema({
       ref: 'Review',
     },
   ],
-  orders: {
-    type: Schema.Types.ObjectId,
-    ref: 'Order',
-  },
+  orders: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Order',
+    },
+  ],
 });
 
 // append passport-local-mongoose package to userSchema which will will automatically

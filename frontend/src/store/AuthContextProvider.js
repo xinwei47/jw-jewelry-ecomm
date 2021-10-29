@@ -4,11 +4,11 @@ import AuthContext from './auth-context';
 
 const AuthContextProvider = (props) => {
   const initialToken = sessionStorage.getItem('token');
+  const initialWishlist = sessionStorage.getItem('wishlist');
 
   const [token, setToken] = useState(initialToken);
-  // const [userId, setUserId] = useState(null);
+  const [wishlist, setWishlist] = useState(initialWishlist);
   const [isAdmin, setisAdmin] = useState(false);
-
   // convert token to true/false value
   const isAuthenticated = !!token;
 
@@ -18,8 +18,7 @@ const AuthContextProvider = (props) => {
     });
     console.log(data);
     if (data.token) {
-      const { _id: userId, token } = data;
-      // setUserId(userId);
+      const { token } = data;
       setToken(token);
       sessionStorage.setItem('token', token);
     }
@@ -32,10 +31,11 @@ const AuthContextProvider = (props) => {
     console.log(data);
 
     if (data.token) {
-      const { _id: userId, token } = data;
-      // setUserId(userId);
+      const { token, wishlist } = data;
       setToken(token);
+      setWishlist(wishlist);
       sessionStorage.setItem('token', token);
+      sessionStorage.setItem('wishlist', JSON.stringify(wishlist));
     }
   };
 
@@ -43,7 +43,9 @@ const AuthContextProvider = (props) => {
     const { data } = await axios.get('/logout');
     console.log(data);
     setToken(null);
+    setWishlist(null);
     sessionStorage.removeItem('token');
+    sessionStorage.removeItem('wishlist');
   };
 
   console.log(`isLoggedIn: ${isAuthenticated}`);
@@ -52,7 +54,7 @@ const AuthContextProvider = (props) => {
     token,
     isAuthenticated,
     isAdmin: isAdmin,
-    // userId,
+    wishlist,
     onRegister: registerHandler,
     onLogin: loginHandler,
     onLogout: logoutHandler,

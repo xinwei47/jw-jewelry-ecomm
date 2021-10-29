@@ -28,3 +28,13 @@ export const fetchUserData = async (token) => {
   });
   return data;
 };
+
+export const fetchWishList = async (token) => {
+  const { data } = await axios.get('/wishlist', {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  console.log(data);
+  return data;
+};

@@ -6,7 +6,7 @@ import '../styles/pages/_profile.scss';
 
 const Profile = () => {
   const authCtx = useContext(AuthContext);
-  console.log(authCtx);
+  // console.log(authCtx);
   const { token } = authCtx;
 
   const {

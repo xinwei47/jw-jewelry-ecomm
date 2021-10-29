@@ -9,6 +9,7 @@ import Auth from './pages/Auth';
 import Cart from './pages/Cart';
 import ProductDetail from './pages/ProductDetail';
 import Profile from './pages/Profile';
+import Wishlist from './pages/Wishlist';
 import AuthContext from './store/auth-context';
 
 import './App.scss';
@@ -41,6 +42,11 @@ function App() {
 
         <Route path='/profile'>
           {authCtx.isAuthenticated && <Profile />}
+          {!authCtx.isAuthenticated && <Auth />}
+        </Route>
+
+        <Route path='/wishlist'>
+          {authCtx.isAuthenticated && <Wishlist />}
           {!authCtx.isAuthenticated && <Auth />}
         </Route>
 

@@ -1,6 +1,7 @@
 import { useContext } from 'react';
 
 import CartContext from '../store/cart-context';
+import Button from '../UI/Button';
 import '../styles/pages/_cart.scss';
 
 const Cart = () => {
@@ -18,18 +19,18 @@ const Cart = () => {
               <p className='cart__item-price'>price: ${product.price}</p>
               <p className='cart__item-qty'>qty: {product.qty}</p>
               <div className='cart__actions'>
-                <button
-                  className='btn btn-secondary cart__delete'
+                <Button
+                  className='btn-secondary cart__delete'
                   onClick={() => cartCtx.onRemoveItem(product)}
                 >
                   -
-                </button>
-                <button
-                  className='btn btn-secondary cart__add'
+                </Button>
+                <Button
+                  className='btn-secondary cart__add'
                   onClick={() => cartCtx.onAddItem(product)}
                 >
                   +
-                </button>
+                </Button>
               </div>
             </li>
           );
