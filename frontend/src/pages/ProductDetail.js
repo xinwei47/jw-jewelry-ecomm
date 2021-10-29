@@ -37,15 +37,7 @@ const ProductDetail = () => {
     // status: productStatus,
     data: product,
   } = useHttp(fetchSingleProduct);
-  const {
-    // _id,
-    image,
-    name,
-    rating,
-    price,
-    material,
-    description,
-  } = product;
+  const { _id, image, name, rating, price, material, description } = product;
 
   const addToWishlistHandler = async () => {
     // check if the user is logged in
@@ -117,8 +109,8 @@ const ProductDetail = () => {
           <div className="product__actions">
             <Button
               className="btn-primary"
-              // onClick={() => cartCtx.onAddItem(prodId, name, price)}
-              onClick={() => cartCtx.onAddItem(product)}
+              // onClick={() => cartCtx.onAddItem(product)}
+              onClick={() => cartCtx.onAddItem(_id, name, price, image)}
             >
               Add to Cart
             </Button>

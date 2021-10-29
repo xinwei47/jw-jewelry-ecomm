@@ -8,26 +8,38 @@ const Cart = () => {
   const cartCtx = useContext(CartContext);
   // console.log(cartCtx);
   return (
-    <div className='cart'>
-      <h2 className='cart__heading'>Cart</h2>
-      <ul className='cart__list'>
+    <div className="cart">
+      <h2 className="cart__heading">Cart</h2>
+      <ul className="cart__list">
         {cartCtx.products.map((product) => {
+          console.log(product);
           return (
-            <li className='cart__item' key={`cart-item-${product._id}`}>
-              {/* <img src={product.image} alt='' /> */}
-              <p className='cart__item-name'>item: {product.name}</p>
-              <p className='cart__item-price'>price: ${product.price}</p>
-              <p className='cart__item-qty'>qty: {product.qty}</p>
-              <div className='cart__actions'>
+            <li className="cart__item" key={`cart-item-${product._id}`}>
+              {/* <img src={product.image} alt="" /> */}
+              <p className="cart__item-name">item: {product.name}</p>
+              <p className="cart__item-price">price: ${product.price}</p>
+              <p className="cart__item-qty">qty: {product.qty}</p>
+              <div className="cart__actions">
                 <Button
-                  className='btn-secondary cart__delete'
-                  onClick={() => cartCtx.onRemoveItem(product)}
+                  className="btn-secondary cart__delete"
+                  // onClick={() => cartCtx.onRemoveItem(product)}
+                  onClick={() =>
+                    cartCtx.onRemoveItem(product._id, product.price)
+                  }
                 >
                   -
                 </Button>
                 <Button
-                  className='btn-secondary cart__add'
-                  onClick={() => cartCtx.onAddItem(product)}
+                  className="btn-secondary cart__add"
+                  // onClick={() => cartCtx.onAddItem(product)}
+                  onClick={() =>
+                    cartCtx.onAddItem(
+                      product._id,
+                      product.name,
+                      product.price,
+                      product.image
+                    )
+                  }
                 >
                   +
                 </Button>
@@ -36,9 +48,17 @@ const Cart = () => {
           );
         })}
       </ul>
-      <h3 className='cart__total-amt'>total amount: {cartCtx.totalAmount}</h3>
-
-      <button className='btn btn-primary'>Checkout</button>
+      {cartCtx.totalAmount !== 0 && (
+        <>
+          <h3 className="cart__total-amt">
+            total amount: {cartCtx.totalAmount}
+          </h3>
+          <button className="btn btn-primary">Checkout</button>
+        </>
+      )}
+      {cartCtx.totalAmount === 0 && (
+        <h3 className="cart__total-amt">Your cart is empty.</h3>
+      )}
     </div>
   );
 };
