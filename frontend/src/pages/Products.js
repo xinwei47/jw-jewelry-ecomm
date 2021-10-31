@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { useCallback, useEffect } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 
@@ -59,7 +60,7 @@ const Products = () => {
     },
     [category, history, productsRequest]
   );
-
+  // console.log(products);
   return (
     <div className='products'>
       {/* breadcrumb */}

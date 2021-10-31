@@ -5,9 +5,11 @@ export const fetchCategories = async () => {
   return data;
 };
 
-export const fetchProducts = async (category, params = {}) => {
+export const fetchProducts = async (category, filterParams = {}) => {
   const { data } = await axios.get(`/shop/${category}`, {
-    params,
+    params: {
+      ...filterParams,
+    },
   });
   return data;
 };
@@ -35,6 +37,71 @@ export const fetchWishList = async (token) => {
       Authorization: `Bearer ${token}`,
     },
   });
-  console.log(data);
+  // console.log(data);
   return data;
+};
+
+export const postReview = async (token, prodId, reviewContent) => {
+  const { data } = await axios.post(
+    '/review',
+    { ...reviewContent, product: prodId },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  // console.log(data);
+  return data;
+};
+
+export const fetchProductReviews = async (prodId) => {
+  const { data } = await axios.get(`/reviews/${prodId}`);
+  // console.log(data);
+  return data;
+};
+
+export const deleteReview = async (token, reviewId) => {
+  const { data } = await axios.delete(`/review/${reviewId}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  // console.log(data);
+  return data;
+};
+
+export const addToWishlist = async (token, prodId) => {
+  const { data } = await axios.post(
+    '/add-to-wishlist',
+    { prodId },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  return data;
+};
+
+export const removeFromWishlist = async (token, prodId) => {
+  const { data } = await axios.put(
+    '/remove-from-wishlist',
+    { prodId },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  return data;
+};
+
+export const getUserId = async (token) => {
+  const { data: userId } = await axios.get('/get-authentication', {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return userId;
 };

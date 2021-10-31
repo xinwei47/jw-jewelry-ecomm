@@ -1,4 +1,5 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, createRef } from 'react';
+import { useHistory } from 'react-router-dom';
 import FilterInput from './FilterInput';
 import Button from '../UI/Button';
 
@@ -9,18 +10,31 @@ const filtersData = {
 };
 
 const FilterForm = (props) => {
-  const [filterResults, setFilterResults] = useState({});
   // filterResults data format:
   // {
   //   material: ['Yellow Gold', 'Diamond'],
   //   Price: ['100-200', '300+']
   // }
+  const [filterResults, setFilterResults] = useState({});
+  const history = useHistory();
+  // console.log(history);
 
-  const checkedStateRef = useRef();
+  // since there are multiple <FilterInput />
+  // we need to create dynamic number of refs to clear the checked state
+  const checkedStateRef = useRef(
+    Object.keys(filtersData).map(() => createRef())
+  );
+
+  const clearFilterInputHandler = async () => {
+    // console.log(checkedStateRef.current);
+    checkedStateRef.current.map((el) => el.current.clearCheckedInput());
+    setFilterResults({});
+  };
 
   const updatedFilterResults = {};
   // key: materials, prices
   // data: [true, false, false, false]
+  // this format can be dirrectly used as axios request parameters
   const filterInputHandler = (key, data) => {
     // only keep the filters that are checked (true)
     const resultIndex = data
@@ -29,12 +43,6 @@ const FilterForm = (props) => {
     const filterResultsArr = resultIndex.map((ind) => filtersData[key][ind]);
 
     updatedFilterResults[key] = filterResultsArr;
-  };
-
-  const clearInputHandler = () => {
-    console.log(checkedStateRef.current.clearCheckedInput);
-
-    checkedStateRef.current.clearCheckedInput();
   };
 
   const filterFormSubmitHandler = (event) => {
@@ -48,11 +56,11 @@ const FilterForm = (props) => {
   }, [onFiltersSubmittedData, filterResults]);
 
   return (
-    <form className='filter-form' onSubmit={filterFormSubmitHandler}>
+    <form className='form filter-form' onSubmit={filterFormSubmitHandler}>
       {Object.keys(filtersData).map((key, ind) => {
         return (
           <FilterInput
-            ref={checkedStateRef}
+            ref={checkedStateRef.current[ind]}
             key={`${key}-${ind}`}
             onFilterInputData={filterInputHandler.bind(null, key)}
             filterName={key === 'priceTier' ? 'price' : key}
@@ -69,7 +77,7 @@ const FilterForm = (props) => {
         <Button
           className='btn-secondary'
           type='button'
-          onClick={clearInputHandler}
+          onClick={clearFilterInputHandler}
         >
           Clear All
         </Button>

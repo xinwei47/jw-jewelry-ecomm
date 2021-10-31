@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 import express from 'express';
 import session from 'express-session';
 import MongoStore from 'connect-mongo'; // create a MongoDB store for express session data rather than using the memory by default
-import passport from 'passport';
+import passport, { Passport } from 'passport';
 import LocalStrategy from 'passport-local';
 import passportjwt from 'passport-jwt';
 
@@ -10,6 +10,7 @@ import connectDB from './config/mongodb.js';
 import Product from './models/productModel.js';
 import Category from './models/categoryModel.js';
 import User from './models/userModel.js';
+import Review from './models/reviewModel.js';
 import generateToken from './utils/generateToken.js';
 import cleanUserFn from './utils/cleanUserData.js';
 
@@ -116,12 +117,18 @@ app.get('/categories', async (req, res) => {
 // user routes
 
 app.get(
+  '/get-authentication',
+  passport.authenticate('jwt', { session: false }),
+  (req, res) => {
+    res.json(req.user._id);
+  }
+);
+
+app.get(
   '/profile',
   // the line of code below will trigger the passport jwt strategy and return the founded user data
   passport.authenticate('jwt', { session: false }),
-  async (req, res) => {
-    // console.log(req.headers.authorization); // receive the jwt token
-    // console.log(req.user);
+  (req, res) => {
     res.json(req.user);
   }
 );
@@ -146,7 +153,7 @@ app.post('/sign-up', async (req, res) => {
       });
     });
   } catch (error) {
-    console.log(error);
+    return res.json(error);
   }
 });
 
@@ -189,6 +196,22 @@ app.get('/logout', (req, res) => {
   }
 });
 
+app.put(
+  '/change-password',
+  passport.authenticate('jwt', { session: false }),
+  async (req, res, next) => {
+    const user = req.user;
+    const { oldPassword, newPassword } = req.body;
+    // console.log(oldPassword, newPassword);
+
+    await user.changePassword(oldPassword, newPassword, (err) => {
+      // if (err) return next(err);
+      if (err) return res.json(err);
+      return res.json({ success: 'Password updated successfully.' });
+    });
+  }
+);
+
 // wishlist routes
 
 app.get(
@@ -211,7 +234,7 @@ app.post(
     if (!user.wishlist.find((item) => item._id == prodId)) {
       user.wishlist.push(prodId);
       await user.save();
-      res.json(user);
+      res.json(user.wishlist);
     } else {
       res.json({ error: 'Item is already in the wishlist' });
     }
@@ -223,20 +246,63 @@ app.put(
   passport.authenticate('jwt', { session: false }),
   async (req, res) => {
     const { prodId } = req.body;
-    const { wishlist } = req.user; // jwt strategy was triggered to find user
+    const { wishlist } = req.user;
 
     if (wishlist.find((item) => item._id == prodId)) {
       const updatedWishlist = wishlist.filter((item) => item._id != prodId);
       // by default, 'updateOne' return the document BEFORE the update
       await req.user.updateOne({ wishlist: updatedWishlist });
       const user = await User.findById(req.user._id);
-      res.json(user);
+      res.json(user.wishlist);
     } else {
       res.json({ error: 'Item is not in the wishlist' });
     }
   }
 );
 
+// review routes
+app.post(
+  '/review',
+  passport.authenticate('jwt', { session: false }),
+  async (req, res) => {
+    const { _id: userId } = req.user;
+    const { text, rating, product: prodId } = req.body;
+    const review = new Review({
+      product: prodId,
+      author: userId,
+      text,
+      rating,
+    });
+    await review.save();
+    res.json(review);
+  }
+);
+
+app.get('/reviews/:prodId', async (req, res) => {
+  const { prodId } = req.params;
+  const reviews = await Review.find({ product: prodId }).populate('author');
+  // console.log(reviews);
+  res.json(reviews);
+});
+
+// only delete the review when the logged-in user is the author of the review
+app.delete(
+  '/review/:reviewId',
+  passport.authenticate('jwt', { session: false }),
+  async (req, res) => {
+    const { reviewId } = req.params;
+
+    const review = await Review.findById(reviewId);
+    if (review.author.equals(req.user._id)) {
+      await Review.findByIdAndDelete(reviewId);
+      return res.json({ success: 'Review is deleted successfully' });
+    } else {
+      return res.json({ error: 'You are not authorized.' });
+    }
+  }
+);
+
+// all other routes handling
 app.all('*', (req, res, next) => {
   const error = new Error('Page is not founc.');
   res.status(404);
@@ -245,6 +311,7 @@ app.all('*', (req, res, next) => {
 
 // basic error handler
 app.use((err, req, res, next) => {
+  console.log(err.message);
   const statusCode = res.statusCode === 200 ? 500 : res.statusCode;
   res.status(statusCode);
   res.json({

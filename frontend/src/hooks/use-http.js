@@ -37,11 +37,11 @@ const useHttp = (sendRequestFn) => {
 
   // sendRequest is a function that dispatches actions to trigger the reducer function to change states
   const sendRequest = useCallback(
-    async (requestParam, queryString) => {
+    async (...args) => {
       dispatch({ type: 'REQUEST_SENT' });
 
       try {
-        const response = await sendRequestFn(requestParam, queryString);
+        const response = await sendRequestFn(...args);
         const responseLength = response.length;
         dispatch({
           type: 'REQUEST_COMPLETED',

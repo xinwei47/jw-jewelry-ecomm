@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { NavLink, Link, useHistory } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 import AuthContext from '../store/auth-context';
 import CartContext from '../store/cart-context';
 import Button from '../UI/Button';
@@ -9,11 +9,9 @@ import '../styles/layout/_main-navi.scss';
 const MainNavi = () => {
   const authCtx = useContext(AuthContext);
   const cartCtx = useContext(CartContext);
-  const history = useHistory();
 
   const logoutHandler = async () => {
     await authCtx.onLogout();
-    history.goBack();
   };
 
   return (

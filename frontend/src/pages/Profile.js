@@ -3,6 +3,7 @@ import AuthContext from '../store/auth-context';
 import { fetchUserData } from '../lib/api';
 import useHttp from '../hooks/use-http';
 import '../styles/pages/_profile.scss';
+import PasswordForm from './PasswordForm';
 
 const Profile = () => {
   const authCtx = useContext(AuthContext);
@@ -22,10 +23,15 @@ const Profile = () => {
   return (
     <>
       <div className='profile'>
-        <div>Customer Profile Page</div>
+        <h1>Customer Profile Page</h1>
         {/* <p>ID: {userData._id}</p> */}
-        <p>Email: {userData.email}</p>
-        <p>Admin: {authCtx.isAdmin ? 'Yes' : 'No'}</p>
+        <div className='profile__summary'>
+          <p>Email: {userData.email}</p>
+          <p>Admin: {authCtx.isAdmin ? 'Yes' : 'No'}</p>
+          <hr />
+          <h2 className='heading--3'>Change Password </h2>
+          <PasswordForm />
+        </div>
       </div>
     </>
   );

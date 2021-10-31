@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Redirect, Route, Switch } from 'react-router-dom';
 
 import Layout from './layout/Layout';
 import Home from './pages/Home';
@@ -10,12 +10,15 @@ import Cart from './pages/Cart';
 import ProductDetail from './pages/ProductDetail';
 import Profile from './pages/Profile';
 import Wishlist from './pages/Wishlist';
+import Checkout from './pages/Checkout';
 import AuthContext from './store/auth-context';
+import CartContext from './store/cart-context';
 
 import './App.scss';
 
 function App() {
   const authCtx = useContext(AuthContext);
+  const cartCtx = useContext(CartContext);
 
   return (
     <Layout>
@@ -52,6 +55,11 @@ function App() {
 
         <Route path='/cart'>
           <Cart />
+        </Route>
+
+        <Route path='/checkout'>
+          {cartCtx.totalCount !== 0 && <Checkout />}
+          {cartCtx.totalCount === 0 && <Redirect to='/' />}
         </Route>
       </Switch>
     </Layout>

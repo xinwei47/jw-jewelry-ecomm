@@ -71,7 +71,7 @@ const CartContextProvider = (props) => {
   const [cartState, cartDispatch] = useReducer(cartReducer, initialCartState);
 
   const addItemHandler = (prodId, name, price, image) => {
-    console.log(prodId, name, price);
+    // console.log(prodId, name, price);
     cartDispatch({ type: 'ADD_ITEM', prodId, name, price, image });
   };
 

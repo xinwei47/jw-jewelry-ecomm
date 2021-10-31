@@ -20,6 +20,8 @@ body {
   box-sizing: border-box;
   position: relative;
   min-height: 100vh;
+  // for development
+  padding-bottom: 150px;
 }
 
 #root {
