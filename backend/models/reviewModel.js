@@ -19,6 +19,11 @@ const reviewSchema = new Schema({
     type: Number,
     required: true,
   },
+  date: {
+    type: Date,
+    default: Date.now,
+    timestamps: false,
+  },
 });
 
 export default mongoose.model('Review', reviewSchema);

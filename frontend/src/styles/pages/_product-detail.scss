@@ -5,43 +5,113 @@
 
   &__content {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: $grid-gap-xs;
+    grid-template-columns: repeat(4, 1fr);
+    gap: $grid-gap-sm;
+  }
+
+  &__left {
+    grid-column: 1 / 4;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: $grid-gap-xxs;
   }
 
   &__image-container {
-    width: 100%;
-    height: 100%;
+    max-width: calc((100vw - 16rem) / 2);
+    height: calc((100vw - 16rem) / 2);
+    max-height: 500px;
   }
 
   &__image {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    overflow: hidden;
+    // overflow: hidden;
   }
 
   &__right {
+  }
+
+  &__rating-reviews {
+    display: flex;
+  }
+
+  &__rating {
+  }
+  &__view-reviews {
+    margin-left: $margin-xxs;
+
+    &,
+    &:link,
+    &:active {
+      // text-decoration: none;
+      color: $color-primary;
+    }
+
+    &:hover {
+      color: $color-secondary;
+    }
   }
 
   &__heading {
     font-size: 2rem;
     text-transform: capitalize;
     letter-spacing: 3px;
+    margin-top: $margin-xxs;
   }
-  &__rating {
-    &-text {
-    }
+  &__price {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-top: $margin-xxs;
   }
-  &__view-reviews {
-  }
-  &__description {
+
+  &__material {
+    margin-top: $margin-sm;
     &-heading {
     }
     &-text {
+      margin-top: $margin-xxs;
     }
   }
 
+  &__description {
+    margin-top: $margin-xs;
+    &-heading {
+    }
+    &-text {
+      margin-top: $margin-xxs;
+    }
+  }
+
+  &__actions {
+    margin-top: $margin-sm;
+    display: flex;
+    flex-direction: column;
+    &-cart {
+      width: 100%;
+    }
+
+    &-wishlist {
+      margin-top: $margin-xs;
+      text-transform: capitalize;
+    }
+  }
+
+  // reviews section
   &__reviews {
+    margin-top: $margin-xl;
+
+    &-heading {
+      text-align: center;
+    }
+
+    &-subheading {
+      padding-bottom: $padding-xs;
+      border-bottom: 1px solid rgba($color-primary, 0.6);
+    }
+  }
+
+  &__write-review {
+    margin-top: $margin-sm;
   }
 }

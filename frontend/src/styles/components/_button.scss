@@ -2,6 +2,7 @@
 
 .btn {
   cursor: pointer;
+  font-family: inherit;
   font-size: 1.4rem;
   transition: all 0.2s;
   background-color: transparent;
@@ -38,7 +39,11 @@
 
 .btn-tertiary {
   border: none;
-  border-bottom: 1px solid $color-primary;
-  padding-bottom: $padding-xxs;
-  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-transform: uppercase;
+
+  &:hover {
+    color: $color-secondary;
+  }
 }

@@ -77,7 +77,7 @@ const FilterForm = (props) => {
         </Button>
 
         <Button
-          className="btn filter-form__clear-btn"
+          className="btn-tertiary filter-form__clear-btn "
           type="button"
           onClick={clearFilterInputHandler}
         >

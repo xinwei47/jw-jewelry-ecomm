@@ -22,7 +22,7 @@ const Home = () => {
   const aboutBtnClickHandler = () => {};
   return (
     <>
-      <Banner src="https://images.unsplash.com/photo-1531995811006-35cb42e1a022?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1740&q=80">
+      <Banner src="images/banner.jpg">
         <h1 className="heading--1">Jewelry designed for every day.</h1>
         <Link to="/shop/all">
           <Button className="btn-primary">SHOP ALL</Button>

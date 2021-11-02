@@ -87,7 +87,6 @@ app.get('/shop/products/:productName/:productId', async (req, res) => {
   const { productId } = req.params;
 
   const product = await Product.findById(productId);
-  console.log(product.images[1]);
   res.json(product);
 });
 
@@ -282,7 +281,6 @@ app.post(
 app.get('/reviews/:prodId', async (req, res) => {
   const { prodId } = req.params;
   const reviews = await Review.find({ product: prodId }).populate('author');
-  // console.log(reviews);
   res.json(reviews);
 });
 

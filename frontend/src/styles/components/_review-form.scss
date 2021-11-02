@@ -1,0 +1,28 @@
+@import '../abstract/variables.scss';
+
+.review-form {
+  &__group-control {
+    margin-top: $margin-sm;
+  }
+  &__range {
+  }
+
+  &__text {
+    width: 100%;
+    font-family: inherit;
+    font-size: inherit;
+    // outline: 1px solid $color-secondary;
+    border-radius: 0;
+    padding: $padding-xs;
+
+    &:focus {
+    }
+  }
+
+  &__actions {
+    margin-top: $margin-sm;
+    text-align: right;
+  }
+  &__btn {
+  }
+}

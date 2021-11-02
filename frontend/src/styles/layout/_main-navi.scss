@@ -57,7 +57,7 @@
     position: relative;
   }
   &__nested-menu {
-    width: 16rem;
+    width: 20rem;
     background-color: $color-white;
     box-shadow: $box-shadow-2;
     padding: 3rem 4rem;
@@ -69,8 +69,12 @@
   }
 
   &__nested-item {
-    &:not(&:first-child) {
-      margin-top: $margin-xs;
+    &:not(&:last-child) {
+      margin-bottom: $margin-xs;
+    }
+
+    &:last-child {
+      margin-top: $margin-sm;
     }
   }
 }
