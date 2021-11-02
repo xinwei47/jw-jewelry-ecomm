@@ -87,6 +87,7 @@ app.get('/shop/products/:productName/:productId', async (req, res) => {
   const { productId } = req.params;
 
   const product = await Product.findById(productId);
+  console.log(product.images[1]);
   res.json(product);
 });
 

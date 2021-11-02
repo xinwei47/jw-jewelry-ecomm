@@ -73,11 +73,13 @@ const ProductDetail = () => {
   // return an array of product's reviews that is written by the logged-in user
   const getReviewsByLoggedInUser = useCallback(
     async (token) => {
-      const userId = await getUserId(token);
-      const reviewsByLoggedInUser = reviews.filter(
-        (review) => review.author._id === userId
-      );
-      setReviewsByAuthUser(reviewsByLoggedInUser);
+      if (authCtx.isAuthenticated) {
+        const userId = await getUserId(token);
+        const reviewsByLoggedInUser = reviews.filter(
+          (review) => review.author._id === userId
+        );
+        setReviewsByAuthUser(reviewsByLoggedInUser);
+      }
     },
     [reviews]
   );
@@ -121,47 +123,51 @@ const ProductDetail = () => {
     console.log('deleted review');
   };
 
-  const { _id, image, name, rating, price, material, description } = product;
+  const { _id, images, name, rating, price, material, description } = product;
+
   return (
-    <div className='product'>
-      <div className='product__content'>
-        <div className='product__image-container'>
-          <img src={image} alt={`${name}`} />
+    <div className="product">
+      <div className="product__content">
+        <div className="product__images-container">
+          <img src={images} alt={`${name}`} />
+          {/* {images.map((image) => (
+            <img src={image} alt={`${name}`} />
+          ))} */}
         </div>
 
-        <div className='product__right'>
-          <h1 className='product__heading'>{name}</h1>
-          <div className='product__rating'>
+        <div className="product__right">
+          <h1 className="product__heading">{name}</h1>
+          <div className="product__rating">
             {/* stars */}
-            <p className='product__rating-text'>
+            <p className="product__rating-text">
               {parseFloat(rating).toFixed(1)}
             </p>
-            <p className='product__price-text'>${price}</p>
-            <a href='#reviews' className='product__view-reviews'>
+            <p className="product__price-text">${price}</p>
+            <a href="#reviews" className="product__view-reviews">
               See 20 Reviews
             </a>
           </div>
           <div>{material}</div>
-          <div className='product__description'>
-            <h4 className='product__description-heading'>Description</h4>
-            <div className='product__description-text'>{description}</div>
+          <div className="product__description">
+            <h4 className="product__description-heading">Description</h4>
+            <div className="product__description-text">{description}</div>
           </div>
-          <div className='product__actions'>
+          <div className="product__actions">
             <Button
-              className='btn-primary'
+              className="btn-primary"
               // onClick={() => cartCtx.onAddItem(product)}
-              onClick={() => cartCtx.onAddItem(_id, name, price, image)}
+              onClick={() => cartCtx.onAddItem(_id, name, price, images)}
             >
               Add to Cart
             </Button>
             {/* wishlist actions */}
             {!isOnWishlist ? (
-              <Button className='btn-tertiary' onClick={addToWishlistHandler}>
+              <Button className="btn-tertiary" onClick={addToWishlistHandler}>
                 Add to Wishlist
               </Button>
             ) : (
               <Button
-                className='btn-tertiary'
+                className="btn-tertiary"
                 onClick={removeFromWishlistHandler}
               >
                 Remove From Wishlist
@@ -172,8 +178,8 @@ const ProductDetail = () => {
       </div>
 
       {/* display reviews */}
-      <div className='product__reviews' id='reviews'>
-        <h2 className='heading--2'>Reviews</h2>
+      <div className="product__reviews" id="reviews">
+        <h2 className="heading--2">Reviews</h2>
       </div>
       {/* only display review form when user is logged in */}
       {authCtx.isAuthenticated && (
@@ -181,10 +187,10 @@ const ProductDetail = () => {
       )}
 
       {/* fetch reviews */}
-      <ul className='reviews'>
+      <ul className="reviews">
         {reviews.map((review) => {
           return (
-            <li className='' key={`review-${review._id}`}>
+            <li className="" key={`review-${review._id}`}>
               <div>{review.author.email}</div>
               <div>{review.rating}</div>
               <div>{review.text}</div>
@@ -195,7 +201,7 @@ const ProductDetail = () => {
                   (reviewByAuth) => reviewByAuth._id === review._id
                 ) && (
                   <Button
-                    className=''
+                    className=""
                     onClick={deleteReviewHandler.bind(null, review._id)}
                   >
                     DELETE

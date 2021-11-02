@@ -1,8 +1,6 @@
 import FilterForm from './FilterForm';
 import SubNavi from './SubNavi';
 
-import '../styles/components/_sidebar.scss';
-
 const Sidebar = (props) => {
   return (
     <>

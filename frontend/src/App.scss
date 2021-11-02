@@ -11,14 +11,27 @@
 
 html {
   font-size: 62.5%;
+
+  @media only screen and (max-width: $bp-md) {
+    font-size: 56.25%; //9px
+  }
+
+  @media only screen and (max-width: $bp-xs) {
+    font-size: 50%; //8px
+  }
+
+  @media only screen and (max-width: $bp-xxs) {
+    font-size: 43.75%; // 7px
+  }
 }
 
 body {
   font-family: 'Lato', sans-serif;
-  font-size: 1.6rem;
+  font-size: 1.4rem;
   color: $color-primary;
   box-sizing: border-box;
   position: relative;
+
   min-height: 100vh;
   // for development
   padding-bottom: 150px;
@@ -26,11 +39,11 @@ body {
 
 #root {
   display: grid;
-  // 12 grid, max content width: 114rem
+  // 12 grid, max content width: 160rem
   grid-template-columns:
     [full-start] minmax(6rem, 1fr) [center-start] repeat(
       12,
-      [col-start] minmax(min-content, 9.5rem) [col-end]
+      [col-start] minmax(0, 12rem) [col-end]
     )
     [center-end] minmax(6rem, 1fr) [full-end];
 }
@@ -40,11 +53,11 @@ body {
 }
 
 .heading--2 {
-  font-size: 3.2rem;
+  font-size: 2.4rem;
 }
 
 .heading--3 {
-  font-size: 2.4rem;
+  font-size: 2rem;
   font-weight: 700;
 }
 
@@ -56,4 +69,8 @@ body {
 .heading--5 {
   font-size: 1.2rem;
   font-weight: 500;
+}
+
+.hidden {
+  display: none !important;
 }

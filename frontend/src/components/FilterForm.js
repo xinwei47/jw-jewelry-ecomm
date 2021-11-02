@@ -3,6 +3,8 @@ import { useHistory } from 'react-router-dom';
 import FilterInput from './FilterInput';
 import Button from '../UI/Button';
 
+import '../styles/components/_filter-form.scss';
+
 const filtersData = {
   material: ['Yellow Gold', 'White Gold', 'Diamond', 'Silver'],
   priceTier: ['0-100', '100-200', '200-300', '300+'],
@@ -56,7 +58,7 @@ const FilterForm = (props) => {
   }, [onFiltersSubmittedData, filterResults]);
 
   return (
-    <form className='form filter-form' onSubmit={filterFormSubmitHandler}>
+    <form className="form filter-form" onSubmit={filterFormSubmitHandler}>
       {Object.keys(filtersData).map((key, ind) => {
         return (
           <FilterInput
@@ -69,14 +71,14 @@ const FilterForm = (props) => {
           />
         );
       })}
-      <div>
-        <Button className='btn-secondary' type='submit'>
+      <div className="filter-form__actions">
+        <Button className="btn-secondary" type="submit">
           Apply Filters
         </Button>
 
         <Button
-          className='btn-secondary'
-          type='button'
+          className="btn filter-form__clear-btn"
+          type="button"
           onClick={clearFilterInputHandler}
         >
           Clear All

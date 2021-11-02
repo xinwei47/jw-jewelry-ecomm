@@ -6,12 +6,12 @@
   &__item {
     cursor: pointer;
     &:not(:first-child) {
-      margin-top: $margin-xxs;
+      margin-top: $margin-xs;
     }
   }
   &__link {
     text-decoration: none;
-    text-transform: capitalize;
+    text-transform: uppercase;
 
     &:link,
     &:visited,
@@ -22,5 +22,11 @@
     &:hover {
       color: $color-secondary;
     }
+  }
+
+  &__active-link {
+    font-weight: 700;
+    // text-decoration: underline;
+    // text-underline-offset: 2px;
   }
 }

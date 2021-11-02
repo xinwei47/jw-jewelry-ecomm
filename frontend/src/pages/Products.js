@@ -62,19 +62,23 @@ const Products = () => {
   );
   // console.log(products);
   return (
-    <div className='products'>
+    <div className="products">
       {/* breadcrumb */}
       {/* sidebar */}
       <Sidebar
-        className='products__sidebar'
+        className="products__sidebar"
         menuList={categories}
         onFiltersSubmittedData={submittedFilterResultsHandler}
       />
-      <div className='products__content'>
-        <p className='products__count'>{productsCount} items</p>
+      <div className="products__content">
+        <h3 className=" heading--3 products__heading">
+          {category === 'all' ? 'Shop ' : ''}
+          {category}
+        </h3>
+        <p className="products__count">{productsCount} items</p>
         <ProductsGallery
-          className='products__gallery'
-          type='products'
+          className="products__gallery"
+          type="products"
           items={products}
         />
       </div>

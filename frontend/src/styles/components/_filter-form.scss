@@ -1,0 +1,18 @@
+@import '../abstract/variables.scss';
+
+.filter-form {
+  margin-top: $margin-md;
+  &__actions {
+    margin-top: $margin-sm;
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__clear-btn {
+    margin-top: $margin-xs;
+    border: none;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    text-transform: uppercase;
+  }
+}

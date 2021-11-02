@@ -1,21 +1,34 @@
 @import '../abstract/variables.scss';
 
 .products {
-  grid-column: full-start/full-end;
+  grid-column: center-start/center-end;
+  margin-top: $margin-sm;
+  position: relative;
 
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: max-content repeat(3, 1fr);
+  gap: $grid-gap-sm;
 
   &__sidebar {
+    margin-top: $margin-sm;
+    max-height: 100vh;
+    position: sticky;
+    top: 4rem;
   }
   &__content {
     grid-column: 2/5;
   }
+  &__heading {
+    text-transform: capitalize;
+    margin-bottom: $margin-xs;
+  }
   &__count {
+    margin-bottom: $margin-xs;
   }
   &__gallery {
     display: grid;
-    grid-template-columns: repeat(auto-fit, 280px);
+    // grid-template-columns: repeat(auto-fit, 280px);
+    grid-template-columns: repeat(3, minmax(min-content, 1fr));
     gap: $grid-gap-xs;
   }
 }

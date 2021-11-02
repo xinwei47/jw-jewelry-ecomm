@@ -30,7 +30,7 @@ export const ProductsGallery = (props) => {
           <Card
             key={item._id}
             link={`/shop/products/${linkName}/${item._id}`}
-            src={item.image}
+            src={item.images[0]}
             title={item.name}
             alt={`shop by ${item.name}`}
           >

@@ -2,7 +2,7 @@
 
 .nav {
   grid-column: center-start/center-end;
-  padding: $padding-xs 0;
+  padding: $padding-sm 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -21,6 +21,7 @@
   }
   &__logo-text {
     font-size: 2.4rem;
+    letter-spacing: 2px;
   }
   &__menu {
   }
@@ -29,6 +30,8 @@
     display: flex;
   }
   &__menu-item {
+    text-transform: uppercase;
+    letter-spacing: 1px;
     &:not(&:last-child) {
       margin-right: $margin-md;
     }
@@ -40,10 +43,34 @@
     &:visited,
     &:active {
       color: $color-primary;
+      // font-weight: 700;
     }
 
     &:hover {
       color: $color-secondary;
+    }
+  }
+
+  // nested menu styling
+  &__account {
+    cursor: pointer;
+    position: relative;
+  }
+  &__nested-menu {
+    width: 16rem;
+    background-color: $color-white;
+    box-shadow: $box-shadow-2;
+    padding: 3rem 4rem;
+    list-style: none;
+    position: absolute;
+    z-index: 100;
+    top: 150%;
+    left: -20%;
+  }
+
+  &__nested-item {
+    &:not(&:first-child) {
+      margin-top: $margin-xs;
     }
   }
 }
