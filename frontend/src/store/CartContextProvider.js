@@ -19,7 +19,7 @@ const cartReducer = (prevState, action) => {
           _id: action.prodId,
           name: action.name,
           price: action.price,
-          image: action.image,
+          images: action.images,
           qty: 1,
         },
       ];
@@ -70,9 +70,9 @@ const CartContextProvider = (props) => {
 
   const [cartState, cartDispatch] = useReducer(cartReducer, initialCartState);
 
-  const addItemHandler = (prodId, name, price, image) => {
+  const addItemHandler = (prodId, name, price, images) => {
     // console.log(prodId, name, price);
-    cartDispatch({ type: 'ADD_ITEM', prodId, name, price, image });
+    cartDispatch({ type: 'ADD_ITEM', prodId, name, price, images });
   };
 
   const removeItemHandler = (prodId, price) => {

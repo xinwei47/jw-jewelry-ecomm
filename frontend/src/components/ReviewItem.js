@@ -26,22 +26,22 @@ const ReviewItem = (props) => {
   }, [mongoDateReformat, props.review.date]);
 
   return (
-    <li className="review">
+    <li className='review'>
       {/* <p className="review__date">{props.review.date}</p> */}
-      <p className="review__date">{reviewDate}</p>
-      <p className="review__author">{props.review.author.email}</p>
+      <p className='review__date'>{reviewDate}</p>
+      <p className='review__author'>{props.review.author.email}</p>
       {/* <p className="review__rating">{props.review.rating}</p> */}
       <StarRatingView value={props.review.rating} />
-      <p className="review__text">{props.review.text}</p>
+      <p className='review__text'>{props.review.text}</p>
 
       {/* only logged in user who is also the review author can see the delete button   */}
-      <div className="review__actions">
+      <div className='review__actions'>
         {authCtx.isAuthenticated &&
           !!props.reviewsByAuthUser.find(
             (reviewByAuth) => reviewByAuth._id === props.review._id
           ) && (
             <Button
-              className="btn-tertiary review__delete-btn"
+              className='btn-tertiary review__delete-btn'
               onClick={props.onDeleteReview.bind(null, props.review._id)}
             >
               DELETE

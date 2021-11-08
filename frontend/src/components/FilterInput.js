@@ -1,5 +1,6 @@
 import { forwardRef, useState, useImperativeHandle } from 'react';
 import '../styles/components/_filter-input.scss';
+import '../styles/components/_form.scss';
 
 const FilterInput = forwardRef((props, ref) => {
   const [filterCheckedState, setFilterCheckedState] = useState(
@@ -24,15 +25,18 @@ const FilterInput = forwardRef((props, ref) => {
 
   return (
     <>
-      <div className="filter">
-        <legend className="filter__heading">{props.filterName}</legend>
+      <div className='filter'>
+        <legend className='filter__heading'>{props.filterName}</legend>
 
         {props.filterType.map((filter, index) => {
           return (
-            <div className="filter__item" key={`${props.filterName}-${index}`}>
+            <div
+              className='form__checkbox filter__item'
+              key={`${props.filterName}-${index}`}
+            >
               <input
-                className="filter__input"
-                type="checkbox"
+                // className='form__checkbox'
+                type='checkbox'
                 id={`${props.filterName}-checkbox-${index}`}
                 name={filter}
                 value={filter}
@@ -42,7 +46,7 @@ const FilterInput = forwardRef((props, ref) => {
                 }}
               />
               <label
-                className="filter__label"
+                className='filter__label'
                 htmlFor={`${props.filterName}-checkbox-${index}`}
               >
                 {filter}

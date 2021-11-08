@@ -32,8 +32,18 @@
   &__right {
   }
 
+  &__rating {
+    display: flex;
+    align-items: center;
+
+    &-text {
+      margin-left: $margin-xxs;
+    }
+  }
+
   &__rating-reviews {
     display: flex;
+    align-items: center;
   }
 
   &__rating {

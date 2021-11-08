@@ -16,43 +16,6 @@
     align-items: center;
   }
 
-  &__input {
-    // customize checkbox
-    &[type='checkbox'] {
-      appearance: none; // hide default checkbox appearance
-      margin: 0;
-      margin-right: $margin-xxs;
-      width: 1.2rem;
-      height: 1.2rem;
-      border: 1px solid $color-primary;
-
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    // custom "checked" state
-    &[type='checkbox']::before {
-      content: '';
-      width: 0.8rem;
-      height: 0.8rem;
-      // tick path
-      clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
-      background-color: $color-white;
-      transition: 120ms transform ease-in-out;
-      transform-origin: center;
-      transform: scale(0);
-    }
-
-    &[type='checkbox']:checked {
-      background-color: $color-primary;
-    }
-
-    &[type='checkbox']:checked::before {
-      transform: scale(1);
-    }
-  }
-
   &__label {
   }
 }

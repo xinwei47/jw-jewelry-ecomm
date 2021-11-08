@@ -86,7 +86,8 @@ passport.use(
 app.get('/shop/products/:productName/:productId', async (req, res) => {
   const { productId } = req.params;
 
-  const product = await Product.findById(productId);
+  const product = await Product.findById(productId).populate('reviews');
+  // console.log(product);
   res.json(product);
 });
 
@@ -273,7 +274,12 @@ app.post(
       text,
       rating,
     });
+
+    const product = await Product.findById(prodId);
+    product.reviews.push(review);
+
     await review.save();
+    await product.save();
     res.json(review);
   }
 );

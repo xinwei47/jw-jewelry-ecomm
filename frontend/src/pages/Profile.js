@@ -23,13 +23,13 @@ const Profile = () => {
   return (
     <>
       <div className='profile'>
-        <h1>Customer Profile Page</h1>
-        {/* <p>ID: {userData._id}</p> */}
+        <h1 className='heading--1 profile__heading'>Customer Profile</h1>
         <div className='profile__summary'>
-          <p>Email: {userData.email}</p>
-          <p>Admin: {authCtx.isAdmin ? 'Yes' : 'No'}</p>
-          <hr />
-          <h2 className='heading--3'>Change Password </h2>
+          <p className='profile__label'>Email: </p>
+          <p className='profile__text'>{userData.email}</p>
+        </div>
+        <div className='profile__password'>
+          <h2 className='heading--3'>Change Password</h2>
           <PasswordForm />
         </div>
       </div>

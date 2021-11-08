@@ -1,3 +1,27 @@
+@import '../abstract/variables.scss';
+
 .profile {
   grid-column: center-start/center-end;
+
+  &__heading {
+    margin-top: $margin-sm;
+    font-size: 3.2rem !important;
+  }
+
+  &__summary {
+    display: flex;
+    margin-top: $margin-sm;
+  }
+
+  &__label {
+    font-weight: 700;
+    margin-right: $margin-sm;
+  }
+
+  &__text {
+  }
+
+  &__password {
+    margin-top: $margin-md;
+  }
 }

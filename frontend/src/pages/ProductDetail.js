@@ -16,6 +16,7 @@ import ReviewForm from '../components/ReviewForm';
 
 import Reviews from '../components/Reviews';
 import '../styles/pages/_product-detail.scss';
+import StarRatingView from '../components/StarRatingView';
 
 const ProductDetail = () => {
   // get the initial wishlist state from user wishlist in database
@@ -65,11 +66,6 @@ const ProductDetail = () => {
     // console.log('get product reviews request');
     reviewsRequest(productId);
   }, [reviewsRequest, productId]);
-
-  // refresh the reviews when a new comment is added
-  const addedCommentHandler = () => {
-    reviewsRequest(productId);
-  };
 
   // find out which reviews are written by logged in user
   const [reviewsByAuthUser, setReviewsByAuthUser] = useState([]);
@@ -127,55 +123,78 @@ const ProductDetail = () => {
     console.log('deleted review');
   };
 
-  const { _id, images, name, rating, price, material, description } = product;
+  const { _id, images, name, price, material, description } = product;
+
+  const [prodRating, setProdRating] = useState(0);
+
+  const calcProdRating = useCallback((reviews) => {
+    const updatedProdRating =
+      reviews.reduce((sum, curItem) => sum + curItem.rating, 0) /
+      reviews.length;
+    // console.log(`updatedProdRating in calcProdRating: ${updatedProdRating}`);
+    setProdRating(updatedProdRating);
+  }, []);
+
+  // refresh the reviews when a new comment is added
+  const addedCommentHandler = async () => {
+    await reviewsRequest(productId);
+    // refetch product starrating and reviews count
+    calcProdRating(reviews);
+  };
+
+  useEffect(() => {
+    if (reviews && reviews.length !== 0) {
+      calcProdRating(reviews);
+    }
+  }, [reviews, reviews.length, calcProdRating]);
 
   return (
-    <div className="product">
-      <div className="product__content">
-        <div className="product__left">
+    <div className='product'>
+      <div className='product__content'>
+        <div className='product__left'>
           {images &&
             images.map((image, ind) => (
               <div
                 key={`${name}-image-${ind}`}
-                className="product__image-container"
+                className='product__image-container'
               >
-                <img src={image} alt={`${name}`} className="product__image" />
+                <img src={image} alt={`${name}`} className='product__image' />
               </div>
             ))}
         </div>
 
-        <div className="product__right">
-          <div className="product__rating-reviews">
-            {/* rating stars */}
+        <div className='product__right'>
+          <div className='product__rating-reviews'>
+            <div className='product__rating'>
+              <StarRatingView value={prodRating} />
+              <p className='product__rating-text'>
+                {prodRating === 0 ? 0 : prodRating.toFixed(1)} |
+              </p>
+            </div>
 
-            {/* rating stars end */}
-
-            <p className="product__rating">
-              {`${parseFloat(rating).toFixed(1)} |`}
-            </p>
-            <a href="#reviews" className="product__view-reviews">
+            <a href='#reviews' className='product__view-reviews'>
               {reviews.length === 0
                 ? 'No Reviews'
                 : `${reviews.length} Reviews`}
             </a>
           </div>
 
-          <h1 className="product__heading">{name}</h1>
-          <p className="product__price">${price}</p>
+          <h1 className='product__heading'>{name}</h1>
+          <p className='product__price'>${price}</p>
 
-          <div className="product__material">
-            <h4 className="product__material-heading">Material</h4>
-            <p className="product__material-text">{material}</p>
+          <div className='product__material'>
+            <h4 className='product__material-heading'>Material</h4>
+            <p className='product__material-text'>{material}</p>
           </div>
 
-          <div className="product__description">
-            <h4 className="product__description-heading">Description</h4>
-            <p className="product__description-text">{description}</p>
+          <div className='product__description'>
+            <h4 className='product__description-heading'>Description</h4>
+            <p className='product__description-text'>{description}</p>
           </div>
 
-          <div className="product__actions">
+          <div className='product__actions'>
             <Button
-              className="btn-primary product__actions-cart"
+              className='btn-primary product__actions-cart'
               onClick={() => cartCtx.onAddItem(_id, name, price, images)}
             >
               Add to Cart
@@ -183,14 +202,14 @@ const ProductDetail = () => {
             {/* wishlist actions */}
             {!isOnWishlist ? (
               <Button
-                className="btn-tertiary product__actions-wishlist"
+                className='btn-tertiary product__actions-wishlist'
                 onClick={addToWishlistHandler}
               >
                 Add to Wishlist
               </Button>
             ) : (
               <Button
-                className="btn-tertiary product__actions-wishlist"
+                className='btn-tertiary product__actions-wishlist'
                 onClick={removeFromWishlistHandler}
               >
                 Remove From Wishlist
@@ -201,22 +220,22 @@ const ProductDetail = () => {
       </div>
 
       {/* display reviews */}
-      <div className="product__reviews" id="reviews">
-        <h3 className="heading--3 product__reviews-heading">
+      <div className='product__reviews' id='reviews'>
+        <h3 className='heading--3 product__reviews-heading'>
           Why people love us
         </h3>
 
         {/* only display review form when user is logged in */}
         {authCtx.isAuthenticated && (
-          <div className="product__write-review">
-            <h4 className="heading--4">Write a review</h4>
+          <div className='product__write-review'>
+            <h4 className='heading--4'>Write a review</h4>
             <ReviewForm onAddedComment={addedCommentHandler} />
           </div>
         )}
 
         {/* fetch reviews */}
-        <div className="product__display-reviews">
-          <h4 className="heading--4 product__reviews-subheading">
+        <div className='product__display-reviews'>
+          <h4 className='heading--4 product__reviews-subheading'>
             Reviews ({reviews.length})
           </h4>
           <Reviews

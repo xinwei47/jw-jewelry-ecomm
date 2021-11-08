@@ -52,41 +52,32 @@ const ReviewForm = (props) => {
     }
   };
 
-  console.log(`rating: ${rating}`);
   return (
     <>
       <form
-        action=""
+        action=''
         onSubmit={reviewFormSubmitHandler}
-        className="review-form"
+        className='review-form'
       >
-        <div className="review-form__group-control">
-          <label htmlFor="">Rating</label>
-          {/* <input
-            type="range"
-            min="1"
-            max="5"
-            defaultValue="3"
-            ref={ratingInputRef}
-            className="review-form__range"
-          /> */}
-
+        <div className='review-form__group-control'>
+          <label className='review-form__rating-heading' htmlFor=''>
+            Rating:
+          </label>
           <StarRating onRatingSelected={ratingSelectedHandler} />
         </div>
-        <div className="review-form__group-control">
-          {/* <label htmlFor='reviewText'>Write a review</label> */}
+        <div className='review-form__group-control'>
           <textarea
-            id="reviewText"
-            rows="4"
+            id='reviewText'
+            rows='4'
             // cols="100"
             ref={reviewInputRef}
-            placeholder="Enter your review..."
-            className="review-form__text"
+            placeholder='Enter your review...'
+            className='review-form__text'
             // required
           />
         </div>
-        <div className="review-form__actions">
-          <Button type="submit" className="btn-primary review-form__btn">
+        <div className='review-form__actions'>
+          <Button type='submit' className='btn-primary review-form__btn'>
             Submit
           </Button>
         </div>

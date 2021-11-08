@@ -9,7 +9,7 @@ const StarRatingView = (props) => {
 
   useEffect(() => {
     setRating(props.value);
-  }, []);
+  }, [props.value]);
 
   return (
     <div>
@@ -18,6 +18,13 @@ const StarRatingView = (props) => {
           starId={i + 1}
           key={`star_${i + 1}`}
           marked={i + 1 <= rating ? true : false}
+          // marked={
+          //   rating - (i + 1) >= 1
+          //     ? true
+          //     : rating - (i + 1) < 1 && rating - (i + 1) > 0
+          //     ? false
+          //     : undefined
+          // }
         />
       ))}
     </div>

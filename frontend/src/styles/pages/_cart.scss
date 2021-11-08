@@ -1,3 +1,21 @@
+@import '../abstract/variables.scss';
+
 .cart {
   grid-column: center-start/center-end;
+
+  &__heading {
+    font-size: 3.2rem !important;
+    margin-top: $margin-sm;
+  }
+
+  &__checkout-btn {
+    margin-top: $margin-sm;
+  }
+
+  &__empty {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
 }

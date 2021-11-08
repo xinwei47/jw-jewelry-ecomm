@@ -48,10 +48,12 @@ const productSchema = new Schema({
     required: true,
     default: 0,
   },
-  rating: {
-    type: Number,
-    default: 0,
-  },
+  reviews: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Review',
+    },
+  ],
 });
 
 export default mongoose.model('Product', productSchema);

@@ -39,7 +39,7 @@ const importData = async () => {
           'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sint molestias sit excepturi hic maxime laboriosam optio cupiditate ipsum deserunt aliquam repellendus nisi itaque, dolor fugiat, esse sunt. Sunt, sint perspiciatis!',
         price,
         countInStock,
-        rating,
+        reviews: [],
       });
       await product.save();
     }

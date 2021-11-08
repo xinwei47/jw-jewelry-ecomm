@@ -1,0 +1,126 @@
+@import '../abstract/variables.scss';
+
+.form {
+  &__group-control {
+    margin-top: $margin-xs;
+
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    align-items: center;
+  }
+
+  & label {
+    margin-right: $margin-xs;
+    font-weight: 700;
+    grid-column: 1/2;
+  }
+
+  & input {
+    font-family: inherit;
+    font-size: inherit;
+    border: 1px solid rgba($color-primary, 0.2);
+    padding: $padding-xxs;
+    grid-column: 2/5;
+  }
+
+  &__section {
+    margin: $margin-md 0;
+
+    &-heading {
+    }
+    &-subheading {
+      margin-top: $margin-md;
+    }
+
+    &-content {
+      margin-top: $margin-sm;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: $grid-gap-xxs;
+    }
+  }
+
+  &__checkbox {
+    grid-column: 1/-1;
+    display: flex;
+    align-items: center;
+
+    & input {
+      // customize checkbox
+      appearance: none; // hide default checkbox appearance
+      margin: 0;
+      margin-right: $margin-xxs;
+      width: 1.2rem;
+      height: 1.2rem;
+      border: 1px solid $color-primary;
+
+      display: grid;
+      place-content: center;
+
+      // custom "checked" state
+      &::before {
+        content: '';
+        width: 0.8rem;
+        height: 0.8rem;
+        // tick path
+        clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+        background-color: $color-white;
+        transition: 120ms transform ease-in-out;
+        transform-origin: center;
+        transform: scale(0);
+      }
+
+      &:checked {
+        background-color: $color-primary;
+      }
+
+      &:checked::before {
+        transform: scale(1);
+      }
+    }
+  }
+
+  &__radio {
+    display: flex;
+    align-items: center;
+    grid-column: 1/-1;
+
+    & input {
+      // hide radio button default setting
+      appearance: none;
+      background-color: $color-white;
+
+      width: 1.6rem;
+      height: 1.6rem;
+      border: 1px solid $color-primary;
+      border-radius: 50%;
+      margin-right: $margin-xxs;
+
+      display: grid;
+      place-content: center;
+    }
+    & input::before {
+      content: '';
+      width: 0.8rem;
+      height: 0.8rem;
+      border-radius: 50%;
+      transform: scale(0);
+      transition: 120ms transform ease-in-out;
+      background-color: $color-primary;
+    }
+
+    & input:checked::before {
+      transform: scale(1);
+    }
+
+    & label {
+    }
+  }
+
+  &__actions {
+    margin-top: $margin-md;
+  }
+
+  &__btn {
+  }
+}

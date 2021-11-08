@@ -1,3 +1,30 @@
+@import '../abstract/variables.scss';
+
 .checkout {
   grid-column: center-start/center-end;
+  margin-top: $margin-sm;
+
+  &__container {
+    display: flex;
+  }
+
+  &__email {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    margin-top: $margin-sm;
+    & input {
+      grid-column: 2/5;
+    }
+  }
+
+  &__right {
+    margin-left: $margin-md;
+    padding: $padding-md;
+    background-color: rgba($color-primary, 0.1);
+    max-height: 100vh;
+  }
+
+  &__order-summary {
+    margin-top: $margin-sm;
+  }
 }

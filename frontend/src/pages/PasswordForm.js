@@ -3,6 +3,8 @@ import { useRef, useContext } from 'react';
 import AuthContext from '../store/auth-context';
 import Button from '../UI/Button';
 
+import '../styles/components/_password-form.scss';
+
 const PasswordForm = () => {
   const authCtx = useContext(AuthContext);
   const currentPwdInputRef = useRef();
@@ -31,20 +33,22 @@ const PasswordForm = () => {
   return (
     <form
       action=''
-      className='form changepassword-form'
+      className='form password-form'
       onSubmit={submitChangePwdFormHandler}
     >
-      <div className=''>
+      <div className='form__group-control password-form__group-control'>
         <label htmlFor=''>Current Password</label>
         <input type='password' ref={currentPwdInputRef} />
       </div>
-      <div className=''>
+      <div className='form__group-control password-form__group-control'>
         <label htmlFor=''>New Password</label>
         <input type='password' ref={newPwdInputRef} />
       </div>
-      <Button type='submit' className='btn-secondary'>
-        Save
-      </Button>
+      <div className='form__actions password-form__actions'>
+        <Button type='submit' className='btn-secondary'>
+          Save
+        </Button>
+      </div>
     </form>
   );
 };

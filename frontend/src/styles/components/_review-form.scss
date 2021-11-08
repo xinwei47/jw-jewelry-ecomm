@@ -3,7 +3,17 @@
 .review-form {
   &__group-control {
     margin-top: $margin-sm;
+
+    &:first-child {
+      display: flex;
+      align-items: center;
+    }
   }
+
+  &__rating-heading {
+    margin-right: $margin-xs;
+  }
+
   &__range {
   }
 
