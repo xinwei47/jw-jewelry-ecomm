@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { useCallback, useEffect } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 
@@ -8,6 +7,8 @@ import { fetchCategories, fetchProducts } from '../lib/api';
 
 import '../styles/pages/_products.scss';
 import useHttp from '../hooks/use-http';
+import LoadingSpinner from '../components/LoadingSpinner';
+import Error from '../components/Error';
 
 const Products = () => {
   const { category } = useParams();
@@ -15,7 +16,7 @@ const Products = () => {
 
   const {
     sendRequest: categoriesRequest,
-    // status: categoriesStatus,
+    status: categoriesStatus,
     data: categories,
   } = useHttp(fetchCategories);
 
@@ -25,10 +26,12 @@ const Products = () => {
 
   const {
     sendRequest: productsRequest,
-    // status: productsStatus,
+    status: productsStatus,
     data: products,
     dataLength: productsCount,
+    error: productsError,
   } = useHttp(fetchProducts);
+  console.log(products);
 
   useEffect(() => {
     productsRequest(category);
@@ -49,10 +52,9 @@ const Products = () => {
     async (filterParams) => {
       if (filterParams) {
         // console.log(filterParams);
-
         const paramArr = reformatFilterResults(filterParams).flat();
         const queryString = paramArr.flat().join('&');
-        console.log(queryString);
+        // console.log(queryString);
 
         history.push(`/shop/${category}?${queryString}`);
         await productsRequest(category, filterParams);
@@ -60,25 +62,32 @@ const Products = () => {
     },
     [category, history, productsRequest]
   );
-  // console.log(products);
+
+  console.log(productsStatus);
+
+  console.log(categoriesStatus);
+  if (productsStatus === 'error') {
+    return (
+      <Error errStatus={productsError.status} errMsg={productsError.data} />
+    );
+  }
+
   return (
-    <div className="products">
-      {/* breadcrumb */}
-      {/* sidebar */}
+    <div className='products'>
       <Sidebar
-        className="products__sidebar"
+        className='products__sidebar'
         menuList={categories}
         onFiltersSubmittedData={submittedFilterResultsHandler}
       />
-      <div className="products__content">
-        <h3 className=" heading--3 products__heading">
+      <div className='products__content'>
+        <h3 className=' heading--3 products__heading'>
           {category === 'all' ? 'Shop ' : ''}
           {category}
         </h3>
-        <p className="products__count">{productsCount} items</p>
+        <p className='products__count'>{productsCount} items</p>
         <ProductsGallery
-          className="products__gallery"
-          type="products"
+          className='products__gallery'
+          type='products'
           items={products}
         />
       </div>

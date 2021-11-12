@@ -57,7 +57,6 @@ export const postReview = async (token, prodId, reviewContent) => {
 
 export const fetchProductReviews = async (prodId) => {
   const { data } = await axios.get(`/reviews/${prodId}`);
-  // console.log(data);
   return data;
 };
 
@@ -67,7 +66,6 @@ export const deleteReview = async (token, reviewId) => {
       Authorization: `Bearer ${token}`,
     },
   });
-  // console.log(data);
   return data;
 };
 

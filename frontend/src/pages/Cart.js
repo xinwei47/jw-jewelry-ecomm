@@ -8,13 +8,16 @@ import OrderSummary from '../components/OrderSummary';
 
 const Cart = () => {
   const cartCtx = useContext(CartContext);
+  console.log(cartCtx);
   return (
     <div className='cart'>
-      <h1 className='heading--1 cart__heading'>Cart</h1>
+      <h1 className='heading--1 cart__heading'>
+        My Cart ({cartCtx.products.length})
+      </h1>
 
       {cartCtx.products && (
         <>
-          <OrderSummary shippingCost={0} />
+          <OrderSummary className='cart__order-summary' shippingCost={0} />
           <Link to='/checkout'>
             <Button className='btn-primary cart__checkout-btn'>Checkout</Button>
           </Link>

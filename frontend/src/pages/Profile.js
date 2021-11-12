@@ -12,9 +12,13 @@ const Profile = () => {
 
   const {
     sendRequest: sendUserDataRequest,
-    // status: userDataStatus,
+    status: userDataStatus,
     data: userData,
+    error,
   } = useHttp(fetchUserData);
+
+  console.log(userDataStatus);
+  console.log(error);
 
   useEffect(() => {
     sendUserDataRequest(token);

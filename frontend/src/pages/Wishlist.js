@@ -5,6 +5,8 @@ import useHttp from '../hooks/use-http';
 
 import '../styles/pages/_wishlist.scss';
 import { useEffect } from 'react';
+import Card from '../components/Card';
+import { ProductsGallery } from '../components/Gallery';
 
 const Wishlist = () => {
   const authCtx = useContext(AuthContext);
@@ -20,21 +22,15 @@ const Wishlist = () => {
     sendWishlistRequest(token);
   }, [sendWishlistRequest, token]);
 
+  console.log(wishlist);
+
   return (
     <>
       <div className='wishlist'>
-        <h1 className='wishlist__heading'>Wishlist</h1>
-        <ul className='wishlist__list'>
-          {wishlist.map((item) => {
-            return (
-              <li className='wishlist__item' key={`wishlist-${item._id}`}>
-                {/* <img src={item.image} alt='' /> */}
-                <p>{item.name}</p>
-                <p>price: ${item.price}</p>
-              </li>
-            );
-          })}
-        </ul>
+        <h1 className='heading--1 wishlist__heading'>
+          My Wishlist ({wishlist.length})
+        </h1>
+        <ProductsGallery className='wishlist__gallery' items={wishlist} />
       </div>
     </>
   );

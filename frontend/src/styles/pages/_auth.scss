@@ -1,3 +1,27 @@
+@import '../abstract/variables.scss';
+
 .auth {
-  grid-column: center-start/center-end;
+  // grid-column: center-start/center-end;
+  grid-column: col-start 4 / col-end 9;
+
+  &__heading {
+    margin-top: $margin-md;
+    margin-bottom: $margin-sm;
+    text-align: center;
+  }
+
+  &-form {
+    background-color: rgba($color-primary, 0.2);
+    padding: $padding-lg $padding-md;
+
+    &__actions {
+      margin-top: $margin-md;
+      display: flex;
+      flex-direction: column;
+    }
+
+    &__toggle {
+      margin-top: $margin-sm;
+    }
+  }
 }

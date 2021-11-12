@@ -4,7 +4,7 @@
   margin-top: $margin-xl;
 }
 
-.shop {
+.shop-section {
   grid-column: center-start/center-end;
 
   & > .heading--3 {
@@ -18,7 +18,7 @@
   }
 }
 
-.about {
+.about-section {
   grid-column: center-start/center-end;
   display: grid;
   grid-template-columns: repeat(4, 1fr);

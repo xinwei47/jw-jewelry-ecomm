@@ -2,7 +2,7 @@ import { useRef, useState, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 // import axios from 'axios';
 import AuthContext from '../store/auth-context';
-
+import Button from '../UI/Button';
 import '../styles/pages/_auth.scss';
 
 const Auth = () => {
@@ -33,17 +33,20 @@ const Auth = () => {
       email: enteredEmail,
       password: enteredPassword,
     };
-    // console.log(inputData);
-
-    if (isLogin) {
-      await authCtx.onLogin(inputData);
-    } else {
-      await authCtx.onRegister(inputData);
+    try {
+      if (isLogin) {
+        await authCtx.onLogin(inputData);
+      } else {
+        await authCtx.onRegister(inputData);
+      }
+      // go back to previous page after login
+      history.goBack();
+    } catch (error) {
+      // flash the message
+      console.log(error.response.data);
     }
-    // go back to previous page after login
-    history.goBack();
   };
-  console.log(authCtx.isAuthenticated);
+  // console.log(authCtx.isAuthenticated);
 
   return (
     <>
@@ -51,9 +54,9 @@ const Auth = () => {
         <h1 className='heading--1 auth__heading'>
           {isLogin ? 'Login' : 'Create Account'}
         </h1>
-        <form action='' className='auth__form' onSubmit={authSubmitHandler}>
-          <div className='auth-form__group'>
-            <label className='auth-form__label' htmlFor=''>
+        <form action='' className='form auth-form' onSubmit={authSubmitHandler}>
+          <div className='form__group-control auth-form__group-control'>
+            <label className='auth-form__label' htmlFor='email'>
               Email
             </label>
             <input
@@ -66,8 +69,8 @@ const Auth = () => {
               required
             />
           </div>
-          <div className='auth-form__group'>
-            <label className='auth-form__label' htmlFor=''>
+          <div className='form__group-control auth-form__group-control'>
+            <label className='auth-form__label' htmlFor='password'>
               Password
             </label>
             <input
@@ -81,20 +84,20 @@ const Auth = () => {
             />
           </div>
 
-          <div className='form__action'>
-            <button className='btn btn-primary' type='submit'>
+          <div className='auth-form__actions'>
+            <Button className='btn-primary' type='submit'>
               {isLogin ? 'Login' : 'Create Account'}
-            </button>
+            </Button>
 
-            <button
-              className='btn btn-tertiary'
+            <Button
+              className='btn-tertiary auth-form__toggle'
               type='button'
               onClick={createNewAcctHandler}
             >
               {isLogin
                 ? 'New Customer? Create an Account'
                 : 'Already have an account? Login'}
-            </button>
+            </Button>
           </div>
         </form>
       </div>

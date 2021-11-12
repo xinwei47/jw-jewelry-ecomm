@@ -1,3 +1,18 @@
+@import '../abstract/variables.scss';
+
 .wishlist {
   grid-column: center-start/center-end;
+
+  &__heading {
+    margin-top: $margin-sm;
+    font-size: 3.2rem !important;
+  }
+
+  &__gallery {
+    margin-top: $margin-md;
+
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: $grid-gap-xs;
+  }
 }

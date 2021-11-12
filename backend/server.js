@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 import express from 'express';
 import session from 'express-session';
 import MongoStore from 'connect-mongo'; // create a MongoDB store for express session data rather than using the memory by default
-import passport, { Passport } from 'passport';
+import passport from 'passport';
 import LocalStrategy from 'passport-local';
 import passportjwt from 'passport-jwt';
 
@@ -13,6 +13,7 @@ import User from './models/userModel.js';
 import Review from './models/reviewModel.js';
 import generateToken from './utils/generateToken.js';
 import cleanUserFn from './utils/cleanUserData.js';
+import { jwtAuthentication } from './middleware/authMiddleware.js';
 
 dotenv.config();
 connectDB(); // connect to mongoDB
@@ -83,31 +84,38 @@ passport.use(
 
 // ****** Routes ******
 // product routes
-app.get('/shop/products/:productName/:productId', async (req, res) => {
-  const { productId } = req.params;
+// import { ExpressError } from './utils/catchError.js';
 
-  const product = await Product.findById(productId).populate('reviews');
-  // console.log(product);
-  res.json(product);
+app.get('/shop/products/:productName/:productId', async (req, res, next) => {
+  try {
+    const { productId } = req.params;
+    const product = await Product.findById(productId).populate('reviews');
+    return res.json(product);
+  } catch (error) {
+    return res.status(400).send('Product is not found.');
+  }
 });
 
 app.get('/shop/:category', async (req, res) => {
-  const { category } = req.params;
-  const paramObj = req.query;
+  try {
+    const { category } = req.params;
+    const paramObj = req.query;
 
-  let products;
-  if (category === 'all') {
-    products = await Product.find({ ...paramObj });
-  } else {
-    const { _id: categoryId } = await Category.findOne({ name: category });
-    // console.log(`categoryId: ${categoryId}`);
-    products = await Product.find({
-      category: categoryId,
-      ...paramObj,
-    });
+    let products;
+    if (category === 'all') {
+      products = await Product.find({ ...paramObj });
+    } else {
+      const { _id: categoryId } = await Category.findOne({ name: category });
+      // console.log(`categoryId: ${categoryId}`);
+      products = await Product.find({
+        category: categoryId,
+        ...paramObj,
+      });
+    }
+    return res.json(products);
+  } catch (error) {
+    res.status(400).send('Page is not found.');
   }
-
-  res.json(products);
 });
 
 app.get('/categories', async (req, res) => {
@@ -116,23 +124,41 @@ app.get('/categories', async (req, res) => {
 });
 
 // user routes
-
 app.get(
   '/get-authentication',
   passport.authenticate('jwt', { session: false }),
   (req, res) => {
     res.json(req.user._id);
+
+    if (!req.user) {
+      res.status(401).send('Not Authorized');
+    }
   }
 );
 
-app.get(
-  '/profile',
-  // the line of code below will trigger the passport jwt strategy and return the founded user data
-  passport.authenticate('jwt', { session: false }),
-  (req, res) => {
-    res.json(req.user);
-  }
-);
+// app.get(
+//   '/profile',
+//   // the line of code below will trigger the passport jwt strategy and return the founded user data
+//   passport.authenticate('jwt', { session: false }),
+//   // jwtAuthentication,
+//   (req, res, next) => {
+//     console.log(req.user);
+//     res.json(req.user);
+//   }
+// );
+
+app.get('/profile', function (req, res, next) {
+  passport.authenticate('jwt', { session: false }, function (err, user, info) {
+    if (err) return next(err);
+    if (!user) return res.status(401).send('Invalid username or password.');
+    req.login(user, function (err) {
+      if (err) return next(err);
+
+      // console.log(user);
+      return res.json(req.user);
+    });
+  })(req, res, next);
+});
 
 // 'register(user, password, cb)' is a statics method added by password-local-mongoose.
 // It helps to register a new user instance by hashed a given password and also check if username is unique.
@@ -154,46 +180,37 @@ app.post('/sign-up', async (req, res) => {
       });
     });
   } catch (error) {
-    return res.json(error);
+    return res.status(500).send('Something went wrong... Please try again.');
   }
 });
 
-app.post('/sign-in', passport.authenticate('local'), (req, res) => {
-  const cleanUser = cleanUserFn(req.user);
-  return res.json({
-    ...cleanUser,
-    token: generateToken(cleanUser._id),
-  });
+// use custom callback for passport.authenticate: http://www.passportjs.org/docs/authenticate/
+app.post('/sign-in', function (req, res, next) {
+  passport.authenticate('local', function (err, user, info) {
+    if (err) return next(err);
+
+    if (!user) {
+      return res.status(401).send('Login Failed. Please try again.');
+    }
+    req.logIn(user, function (err) {
+      if (err) {
+        return next(err);
+      }
+      const cleanUser = cleanUserFn(req.user);
+      return res.json({
+        ...cleanUser,
+        token: generateToken(cleanUser._id),
+      });
+    });
+  })(req, res, next);
 });
 
-// use custom callback for passport.authenticate: http://www.passportjs.org/docs/authenticate/
-// app.post('/sign-in', function (req, res, next) {
-//   passport.authenticate('local', function (err, user, info) {
-//     if (err) {
-//       return next(err);
-//     }
-//     if (!user) {
-//       return res.json({ error: 'Login failed' });
-//     }
-//     req.logIn(user, function (err) {
-//       if (err) {
-//         return next(err);
-//       }
-//       const cleanUser = cleanUserFn(req.user);
-//       return res.json({
-//         ...cleanUser,
-//         token: generateToken(cleanUser._id),
-//       });
-//     });
-//   })(req, res, next);
-// });
-
-app.get('/logout', (req, res) => {
+app.get('/logout', (req, res, next) => {
   if (req.user) {
     req.logout();
-    return res.json({ success: 'Successfully logout!' });
+    return res.send('Successfully logout!');
   } else {
-    return res.json({ error: 'You are not login.' });
+    return res.status(500).send('You are not login.');
   }
 });
 
@@ -206,8 +223,8 @@ app.put(
     // console.log(oldPassword, newPassword);
 
     await user.changePassword(oldPassword, newPassword, (err) => {
-      // if (err) return next(err);
-      if (err) return res.json(err);
+      if (err)
+        return res.status(500).send('Something went wrong. Please try again.');
       return res.json({ success: 'Password updated successfully.' });
     });
   }
@@ -215,15 +232,32 @@ app.put(
 
 // wishlist routes
 
-app.get(
-  '/wishlist',
+app.get('/wishlist', function (req, res, next) {
   passport.authenticate('jwt', { session: false }),
-  async (req, res) => {
-    const user = await req.user.populate('wishlist');
-    const wishlist = user.wishlist;
-    res.json(wishlist);
-  }
-);
+    function (err, user, info) {
+      if (err) return next(err);
+      if (!user) return res.status(401).send('Invalid username or password.');
+      req.login(user, function (err) {
+        if (err) return next(err);
+
+        console.log(user);
+
+        const userFound = user.populate('wishlist');
+        const wishlist = userFound.wishlist;
+        return res.json(wishlist);
+      });
+    };
+});
+
+// app.get(
+//   '/wishlist',
+//   passport.authenticate('jwt', { session: false }),
+//   async (req, res) => {
+//     const user = await req.user.populate('wishlist');
+//     const wishlist = user.wishlist;
+//     res.json(wishlist);
+//   }
+// );
 
 app.post(
   '/add-to-wishlist',
@@ -285,9 +319,14 @@ app.post(
 );
 
 app.get('/reviews/:prodId', async (req, res) => {
-  const { prodId } = req.params;
-  const reviews = await Review.find({ product: prodId }).populate('author');
-  res.json(reviews);
+  try {
+    const { prodId } = req.params;
+    const reviews = await Review.find({ product: prodId }).populate('author');
+    res.json(reviews);
+  } catch (error) {
+    console.error('no reviews are found');
+    res.status(400).send('no reviews are found');
+  }
 });
 
 // only delete the review when the logged-in user is the author of the review
@@ -308,15 +347,14 @@ app.delete(
 );
 
 // all other routes handling
-app.all('*', (req, res, next) => {
-  const error = new Error('Page is not founc.');
-  res.status(404);
-  next(error);
+app.use('*', (req, res, next) => {
+  res.status(404).json('Page is not found');
+  // next(error);
 });
 
 // basic error handler
 app.use((err, req, res, next) => {
-  console.log(err.message);
+  // console.log(`next error: ${err.message}`);
   const statusCode = res.statusCode === 200 ? 500 : res.statusCode;
   res.status(statusCode);
   res.json({

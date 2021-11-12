@@ -1,0 +1,27 @@
+@import '../abstract/variables.scss';
+
+.error {
+  grid-column: center-start/center-end;
+
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  &__heading {
+    font-size: 6rem !important;
+    text-align: center;
+  }
+
+  &__text {
+    font-size: 2.4rem;
+    margin-top: $margin-sm;
+  }
+
+  &__actions {
+    margin-top: $margin-md;
+  }
+
+  &__btn {
+  }
+}

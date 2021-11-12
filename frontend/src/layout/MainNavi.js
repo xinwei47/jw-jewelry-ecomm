@@ -40,53 +40,53 @@ const MainNavi = () => {
 
   // console.log(showAcctMenu);
   return (
-    <header className="nav">
-      <div className="nav__logo">
-        <Link className="nav__logo-link" to="/">
-          <h1 className="nav__logo-text">JW</h1>
+    <header className='nav'>
+      <div className='nav__logo'>
+        <Link className='nav__logo-link' to='/'>
+          <h1 className='nav__logo-text'>JW</h1>
         </Link>
       </div>
-      <nav className="nav__menu" ref={node}>
-        <ul className="nav__menu-list">
-          <li className="nav__menu-item">
-            <NavLink className="nav__menu-link" to="/shop/all">
+      <nav className='nav__menu' ref={node}>
+        <ul className='nav__menu-list'>
+          <li className='nav__menu-item'>
+            <NavLink className='nav__menu-link' to='/shop/all'>
               Shop
             </NavLink>
           </li>
-          <li className="nav__menu-item">
-            <NavLink className="nav__menu-link" to="/about">
+          <li className='nav__menu-item'>
+            <NavLink className='nav__menu-link' to='/about'>
               About
             </NavLink>
           </li>
           {!authCtx.isAuthenticated && (
-            <li className="nav__menu-item">
-              <NavLink className="nav__menu-link" to="/sign-in">
+            <li className='nav__menu-item'>
+              <NavLink className='nav__menu-link' to='/sign-in'>
                 Sign In/Up
               </NavLink>
             </li>
           )}
           {authCtx.isAuthenticated && (
             <li
-              className="nav__menu-item nav__account"
+              className='nav__menu-item nav__account'
               onClick={toggleAcctMenuHandler}
             >
               My Account
               {authCtx.isAuthenticated && showAcctMenu && (
-                <ul className="nav__nested-menu">
+                <ul className='nav__nested-menu'>
                   {/* show 'profile', 'wishlist', 'logout' under 'My Account' as nested menu */}
-                  <li className="nav__nested-item">
-                    <NavLink className="nav__menu-link" to="/profile">
+                  <li className='nav__nested-item'>
+                    <NavLink className='nav__menu-link' to='/profile'>
                       My Profile
                     </NavLink>
                   </li>
-                  <li className="nav__nested-item">
-                    <NavLink className="nav__menu-link" to="/wishlist">
+                  <li className='nav__nested-item'>
+                    <NavLink className='nav__menu-link' to='/wishlist'>
                       My Wishlist
                     </NavLink>
                   </li>
-                  <li className="nav__nested-item">
+                  <li className='nav__nested-item'>
                     <Button
-                      className="btn btn-tertiary"
+                      className='btn btn-tertiary'
                       onClick={logoutHandler}
                     >
                       Logout
@@ -97,9 +97,9 @@ const MainNavi = () => {
             </li>
           )}
 
-          <li className="nav__menu-item">
-            <NavLink className="nav__menu-link" to="/cart">
-              Cart {cartCtx.totalCount}
+          <li className='nav__menu-item'>
+            <NavLink className='nav__menu-link nav__cart-link' to='/cart'>
+              Cart ({cartCtx.totalCount})
             </NavLink>
           </li>
         </ul>

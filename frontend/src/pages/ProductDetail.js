@@ -17,6 +17,7 @@ import ReviewForm from '../components/ReviewForm';
 import Reviews from '../components/Reviews';
 import '../styles/pages/_product-detail.scss';
 import StarRatingView from '../components/StarRatingView';
+import Error from '../components/Error';
 
 const ProductDetail = () => {
   // get the initial wishlist state from user wishlist in database
@@ -42,8 +43,9 @@ const ProductDetail = () => {
   // fetch product detail, prodcut reviews and delete review
   const {
     sendRequest: singleProductRequest,
-    // status: productStatus,
+    status: productStatus,
     data: product,
+    error: productError,
   } = useHttp(fetchSingleProduct);
 
   const {
@@ -64,7 +66,10 @@ const ProductDetail = () => {
 
   useEffect(() => {
     // console.log('get product reviews request');
-    reviewsRequest(productId);
+    // only fetch reviews if product request is successful
+    if (productStatus === 'success') {
+      reviewsRequest(productId);
+    }
   }, [reviewsRequest, productId]);
 
   // find out which reviews are written by logged in user
@@ -147,6 +152,12 @@ const ProductDetail = () => {
       calcProdRating(reviews);
     }
   }, [reviews, reviews.length, calcProdRating]);
+
+  if (productStatus === 'error') {
+    // console.log(productStatus);
+    console.log(product);
+    return <Error errStatus={productError.status} errMsg={productError.data} />;
+  }
 
   return (
     <div className='product'>

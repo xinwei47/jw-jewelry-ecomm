@@ -5,6 +5,7 @@ import { useReducer, useCallback } from 'react';
 const initialState = {
   status: '',
   data: [],
+  error: {},
   dataLength: 0,
 };
 
@@ -13,6 +14,7 @@ const reducer = (prevState, action) => {
     return {
       status: 'pending',
       data: [],
+      error: {},
       dataLength: 0,
     };
   }
@@ -20,6 +22,7 @@ const reducer = (prevState, action) => {
     return {
       status: 'success',
       data: action.payload,
+      error: {},
       dataLength: action.dataLength,
     };
   }
@@ -27,6 +30,7 @@ const reducer = (prevState, action) => {
     return {
       status: 'error',
       data: [],
+      error: action.error,
       dataLength: 0,
     };
   }
@@ -48,8 +52,13 @@ const useHttp = (sendRequestFn) => {
           payload: response,
           dataLength: responseLength,
         });
+        // console.log(response);
       } catch (error) {
-        dispatch({ type: 'REQUEST_ERROR' });
+        console.log(error.response);
+        dispatch({
+          type: 'REQUEST_ERROR',
+          error: error.response,
+        });
       }
     },
     [sendRequestFn]

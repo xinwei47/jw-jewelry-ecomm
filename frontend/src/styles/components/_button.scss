@@ -31,9 +31,14 @@
   background-color: $color-white;
   padding: $padding-xxs $padding-md;
   text-transform: uppercase;
+
   &:hover {
     color: $color-white;
     background-color: $color-primary;
+  }
+
+  @media only screen and (max-width: $bp-lg) {
+    padding: $padding-xxs $padding-sm;
   }
 }
 

@@ -77,4 +77,11 @@
       margin-top: $margin-sm;
     }
   }
+
+  &__cart-link {
+    color: $color-white !important;
+    background-color: $color-primary;
+    padding: 0.8rem $padding-sm;
+    border-radius: $border-radius-sm;
+  }
 }
