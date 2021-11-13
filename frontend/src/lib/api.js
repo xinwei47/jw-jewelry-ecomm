@@ -66,6 +66,7 @@ export const deleteReview = async (token, reviewId) => {
       Authorization: `Bearer ${token}`,
     },
   });
+  console.log(data);
   return data;
 };
 

@@ -31,7 +31,7 @@ const Products = () => {
     dataLength: productsCount,
     error: productsError,
   } = useHttp(fetchProducts);
-  console.log(products);
+  // console.log(products);
 
   useEffect(() => {
     productsRequest(category);

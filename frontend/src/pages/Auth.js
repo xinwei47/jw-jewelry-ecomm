@@ -1,14 +1,17 @@
 import { useRef, useState, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
-// import axios from 'axios';
 import AuthContext from '../store/auth-context';
 import Button from '../UI/Button';
 import '../styles/pages/_auth.scss';
+import FlashMessage from '../components/FlashMessage';
 
 const Auth = () => {
   const [isLogin, setIsLogin] = useState(true); // toggle sign-in/sign-up form
   const [enteredEmail, setEnteredEmail] = useState('');
   const [enteredPassword, setEnteredPassword] = useState('');
+
+  const [hasError, setHasError] = useState(false);
+  const [errMsg, setErrMsg] = useState('');
 
   const authCtx = useContext(AuthContext);
   const history = useHistory();
@@ -42,15 +45,18 @@ const Auth = () => {
       // go back to previous page after login
       history.goBack();
     } catch (error) {
-      // flash the message
-      console.log(error.response.data);
+      // console.log(error.response);
+      setHasError(true);
+      // setErrStatus(error.response.status);
+      setErrMsg(error.response.data);
     }
   };
-  // console.log(authCtx.isAuthenticated);
-
+  console.log(errMsg);
   return (
     <>
       <div className='auth'>
+        {hasError && <FlashMessage>{errMsg}</FlashMessage>}
+
         <h1 className='heading--1 auth__heading'>
           {isLogin ? 'Login' : 'Create Account'}
         </h1>

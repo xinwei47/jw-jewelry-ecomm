@@ -4,10 +4,10 @@ import { fetchUserData } from '../lib/api';
 import useHttp from '../hooks/use-http';
 import '../styles/pages/_profile.scss';
 import PasswordForm from './PasswordForm';
+import Error from '../components/Error';
 
 const Profile = () => {
   const authCtx = useContext(AuthContext);
-  // console.log(authCtx);
   const { token } = authCtx;
 
   const {
@@ -23,6 +23,10 @@ const Profile = () => {
   useEffect(() => {
     sendUserDataRequest(token);
   }, [sendUserDataRequest, token]);
+
+  if (userDataStatus === 'error') {
+    return <Error errStatus={error.status} errMsg={error.data} />;
+  }
 
   return (
     <>

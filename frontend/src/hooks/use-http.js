@@ -54,7 +54,7 @@ const useHttp = (sendRequestFn) => {
         });
         // console.log(response);
       } catch (error) {
-        console.log(error.response);
+        // console.log(error.response);
         dispatch({
           type: 'REQUEST_ERROR',
           error: error.response,

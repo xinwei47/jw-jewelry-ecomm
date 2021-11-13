@@ -18,6 +18,7 @@ import Reviews from '../components/Reviews';
 import '../styles/pages/_product-detail.scss';
 import StarRatingView from '../components/StarRatingView';
 import Error from '../components/Error';
+import FlashMessage from '../components/FlashMessage';
 
 const ProductDetail = () => {
   // get the initial wishlist state from user wishlist in database
@@ -56,7 +57,9 @@ const ProductDetail = () => {
 
   const {
     sendRequest: deleteReviewRequest,
-    // status: deleteReviewStatus,
+    data: deleteReviewData,
+    status: deleteReviewStatus,
+    error: deleteReviewError,
   } = useHttp(deleteReview);
 
   useEffect(() => {
@@ -70,7 +73,7 @@ const ProductDetail = () => {
     if (productStatus === 'success') {
       reviewsRequest(productId);
     }
-  }, [reviewsRequest, productId]);
+  }, [productStatus, reviewsRequest, productId]);
 
   // find out which reviews are written by logged in user
   const [reviewsByAuthUser, setReviewsByAuthUser] = useState([]);
@@ -120,13 +123,28 @@ const ProductDetail = () => {
       history.replace('/sign-in');
     }
   };
+  const [flashMsg, setFlashMsg] = useState('');
 
   const deleteReviewHandler = async (reviewId) => {
+    // try {
     await deleteReviewRequest(authCtx.token, reviewId);
     // if the review is deleted successfully, refetch reviews data
-    reviewsRequest(productId);
-    console.log('deleted review');
+    await reviewsRequest(productId);
+    // setFlashMsg(deleteReviewData);
+
+    // }
+    // catch (error) {
+    //   console.log(error.response);
+    // }
   };
+
+  useEffect(() => {
+    setFlashMsg(deleteReviewData);
+  }, [deleteReviewData]);
+
+  // console.log(deleteReviewData);
+  // console.log(flashMsg);
+  // console.log(deleteReviewStatus);
 
   const { _id, images, name, price, material, description } = product;
 
@@ -147,18 +165,30 @@ const ProductDetail = () => {
     calcProdRating(reviews);
   };
 
+  // const [reviewAddedStatus, setReviewAddedStatus] = useState(null);
+  // const [reviewAddedMsg, setReviewAddedMsg] = useState(null);
+
+  const reviewDataHandler = useCallback((reviewStatus, reviewMsg) => {
+    setFlashMsg(reviewMsg);
+  }, []);
+
+  console.log(flashMsg);
+
   useEffect(() => {
     if (reviews && reviews.length !== 0) {
       calcProdRating(reviews);
     }
   }, [reviews, reviews.length, calcProdRating]);
 
+  // display error page if no product is found
   if (productStatus === 'error') {
     // console.log(productStatus);
-    console.log(product);
+    // console.log(product);
+    // console.log(productError);
     return <Error errStatus={productError.status} errMsg={productError.data} />;
   }
 
+  // console.log(reviews);
   return (
     <div className='product'>
       <div className='product__content'>
@@ -240,11 +270,15 @@ const ProductDetail = () => {
         {authCtx.isAuthenticated && (
           <div className='product__write-review'>
             <h4 className='heading--4'>Write a review</h4>
-            <ReviewForm onAddedComment={addedCommentHandler} />
+            <ReviewForm
+              onAddedComment={addedCommentHandler}
+              onReviewData={reviewDataHandler}
+            />
           </div>
         )}
 
         {/* fetch reviews */}
+        {flashMsg.length !== 0 ? <FlashMessage>{flashMsg}</FlashMessage> : ''}
         <div className='product__display-reviews'>
           <h4 className='heading--4 product__reviews-subheading'>
             Reviews ({reviews.length})

@@ -52,6 +52,7 @@ const AuthContextProvider = (props) => {
       sessionStorage.removeItem('token');
       sessionStorage.removeItem('wishlist');
     } catch (error) {
+      console.log(error);
       console.log(error.response);
     }
   };

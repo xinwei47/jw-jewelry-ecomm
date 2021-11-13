@@ -13,7 +13,8 @@ import User from './models/userModel.js';
 import Review from './models/reviewModel.js';
 import generateToken from './utils/generateToken.js';
 import cleanUserFn from './utils/cleanUserData.js';
-import { jwtAuthentication } from './middleware/authMiddleware.js';
+import catchAsync from './utils/catchAsync.js';
+import asyncHandler from 'express-async-handler';
 
 dotenv.config();
 connectDB(); // connect to mongoDB
@@ -86,15 +87,19 @@ passport.use(
 // product routes
 // import { ExpressError } from './utils/catchError.js';
 
-app.get('/shop/products/:productName/:productId', async (req, res, next) => {
-  try {
-    const { productId } = req.params;
-    const product = await Product.findById(productId).populate('reviews');
-    return res.json(product);
-  } catch (error) {
-    return res.status(400).send('Product is not found.');
-  }
-});
+app.get(
+  '/shop/products/:productName/:productId',
+  asyncHandler(async (req, res, next) => {
+    try {
+      const { productId } = req.params;
+      const product = await Product.findById(productId).populate('reviews');
+
+      return res.json(product);
+    } catch (error) {
+      return res.status(400).send('Product is not found.');
+    }
+  })
+);
 
 app.get('/shop/:category', async (req, res) => {
   try {
@@ -118,10 +123,13 @@ app.get('/shop/:category', async (req, res) => {
   }
 });
 
-app.get('/categories', async (req, res) => {
-  const categories = await Category.find({});
-  res.json(categories);
-});
+app.get(
+  '/categories',
+  asyncHandler(async (req, res) => {
+    const categories = await Category.find({});
+    res.json(categories);
+  })
+);
 
 // user routes
 app.get(
@@ -136,27 +144,12 @@ app.get(
   }
 );
 
-// app.get(
-//   '/profile',
-//   // the line of code below will trigger the passport jwt strategy and return the founded user data
-//   passport.authenticate('jwt', { session: false }),
-//   // jwtAuthentication,
-//   (req, res, next) => {
-//     console.log(req.user);
-//     res.json(req.user);
-//   }
-// );
-
 app.get('/profile', function (req, res, next) {
   passport.authenticate('jwt', { session: false }, function (err, user, info) {
     if (err) return next(err);
     if (!user) return res.status(401).send('Invalid username or password.');
-    req.login(user, function (err) {
-      if (err) return next(err);
 
-      // console.log(user);
-      return res.json(req.user);
-    });
+    return res.json(req.user);
   })(req, res, next);
 });
 
@@ -190,7 +183,9 @@ app.post('/sign-in', function (req, res, next) {
     if (err) return next(err);
 
     if (!user) {
-      return res.status(401).send('Login Failed. Please try again.');
+      return res
+        .status(401)
+        .send('Invalid email or password. Please try again.');
     }
     req.logIn(user, function (err) {
       if (err) {
@@ -209,8 +204,6 @@ app.get('/logout', (req, res, next) => {
   if (req.user) {
     req.logout();
     return res.send('Successfully logout!');
-  } else {
-    return res.status(500).send('You are not login.');
   }
 });
 
@@ -223,41 +216,24 @@ app.put(
     // console.log(oldPassword, newPassword);
 
     await user.changePassword(oldPassword, newPassword, (err) => {
-      if (err)
-        return res.status(500).send('Something went wrong. Please try again.');
-      return res.json({ success: 'Password updated successfully.' });
+      if (err) {
+        return res.status(500).send('Please enter correct password.');
+      }
+      return res.send('Password updated successfully.');
     });
   }
 );
 
-// wishlist routes
-
-app.get('/wishlist', function (req, res, next) {
+// If user is not logged in, will be redirected to login page
+app.get(
+  '/wishlist',
   passport.authenticate('jwt', { session: false }),
-    function (err, user, info) {
-      if (err) return next(err);
-      if (!user) return res.status(401).send('Invalid username or password.');
-      req.login(user, function (err) {
-        if (err) return next(err);
-
-        console.log(user);
-
-        const userFound = user.populate('wishlist');
-        const wishlist = userFound.wishlist;
-        return res.json(wishlist);
-      });
-    };
-});
-
-// app.get(
-//   '/wishlist',
-//   passport.authenticate('jwt', { session: false }),
-//   async (req, res) => {
-//     const user = await req.user.populate('wishlist');
-//     const wishlist = user.wishlist;
-//     res.json(wishlist);
-//   }
-// );
+  async (req, res) => {
+    const user = await req.user.populate('wishlist');
+    const wishlist = user.wishlist;
+    res.json(wishlist);
+  }
+);
 
 app.post(
   '/add-to-wishlist',
@@ -271,7 +247,7 @@ app.post(
       await user.save();
       res.json(user.wishlist);
     } else {
-      res.json({ error: 'Item is already in the wishlist' });
+      res.send('Item is already in the wishlist');
     }
   }
 );
@@ -290,7 +266,7 @@ app.put(
       const user = await User.findById(req.user._id);
       res.json(user.wishlist);
     } else {
-      res.json({ error: 'Item is not in the wishlist' });
+      res.send('Item is not in the wishlist');
     }
   }
 );
@@ -309,24 +285,26 @@ app.post(
       rating,
     });
 
-    const product = await Product.findById(prodId);
-    product.reviews.push(review);
+    try {
+      const product = await Product.findById(prodId);
+      product.reviews.push(review);
 
-    await review.save();
-    await product.save();
-    res.json(review);
+      await review.save();
+      await product.save();
+      // return res.json(review);
+      return res.send('Review is added successfully!');
+    } catch (error) {
+      return res.status(500).send('Something went wrong. Please try again.');
+    }
   }
 );
 
 app.get('/reviews/:prodId', async (req, res) => {
-  try {
-    const { prodId } = req.params;
-    const reviews = await Review.find({ product: prodId }).populate('author');
-    res.json(reviews);
-  } catch (error) {
-    console.error('no reviews are found');
-    res.status(400).send('no reviews are found');
-  }
+  // try {
+  const { prodId } = req.params;
+  const reviews = await Review.find({ product: prodId }).populate('author');
+  // console.log(reviews);
+  res.json(reviews);
 });
 
 // only delete the review when the logged-in user is the author of the review
@@ -338,10 +316,12 @@ app.delete(
 
     const review = await Review.findById(reviewId);
     if (review.author.equals(req.user._id)) {
-      await Review.findByIdAndDelete(reviewId);
-      return res.json({ success: 'Review is deleted successfully' });
-    } else {
-      return res.json({ error: 'You are not authorized.' });
+      Review.findByIdAndDelete(reviewId, (err) => {
+        if (err) {
+          return res.send('You are not authorized.');
+        }
+        return res.send('Review is deleted successfully!');
+      });
     }
   }
 );
@@ -354,7 +334,7 @@ app.use('*', (req, res, next) => {
 
 // basic error handler
 app.use((err, req, res, next) => {
-  // console.log(`next error: ${err.message}`);
+  console.log(err);
   const statusCode = res.statusCode === 200 ? 500 : res.statusCode;
   res.status(statusCode);
   res.json({

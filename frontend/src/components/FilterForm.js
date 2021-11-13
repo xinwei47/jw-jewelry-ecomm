@@ -1,5 +1,4 @@
 import { useEffect, useState, useRef, createRef } from 'react';
-import { useHistory } from 'react-router-dom';
 import FilterInput from './FilterInput';
 import Button from '../UI/Button';
 
@@ -18,8 +17,6 @@ const FilterForm = (props) => {
   //   Price: ['100-200', '300+']
   // }
   const [filterResults, setFilterResults] = useState({});
-  const history = useHistory();
-  // console.log(history);
 
   // since there are multiple <FilterInput />
   // we need to create dynamic number of refs to clear the checked state
@@ -58,7 +55,7 @@ const FilterForm = (props) => {
   }, [onFiltersSubmittedData, filterResults]);
 
   return (
-    <form className="form filter-form" onSubmit={filterFormSubmitHandler}>
+    <form className='form filter-form' onSubmit={filterFormSubmitHandler}>
       {Object.keys(filtersData).map((key, ind) => {
         return (
           <FilterInput
@@ -71,14 +68,14 @@ const FilterForm = (props) => {
           />
         );
       })}
-      <div className="filter-form__actions">
-        <Button className="btn-secondary" type="submit">
+      <div className='filter-form__actions'>
+        <Button className='btn-secondary' type='submit'>
           Apply Filters
         </Button>
 
         <Button
-          className="btn-tertiary filter-form__clear-btn "
-          type="button"
+          className='btn-tertiary filter-form__clear-btn '
+          type='button'
           onClick={clearFilterInputHandler}
         >
           Clear All

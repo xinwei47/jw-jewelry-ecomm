@@ -1,4 +1,4 @@
-import { useRef, useContext, useState } from 'react';
+import { useRef, useContext, useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import AuthContext from '../store/auth-context';
 import Button from '../UI/Button';
@@ -16,9 +16,11 @@ const ReviewForm = (props) => {
 
   const { productId } = useParams();
 
-  const { sendRequest: reviewRequest, status: reviewRequestStatus } = useHttp(
-    postReview
-  );
+  const {
+    sendRequest: reviewRequest,
+    status: reviewRequestStatus,
+    data: reviewRequestData,
+  } = useHttp(postReview);
 
   const { token } = authCtx;
 
@@ -43,6 +45,7 @@ const ReviewForm = (props) => {
 
       // notify parent (ProductDetails) that a comment is added
       props.onAddedComment();
+      // console.log(reviewRequestData);
 
       reviewInputRef.current.value = '';
       setRating(0);
@@ -51,6 +54,12 @@ const ReviewForm = (props) => {
       console.log('Rating and Review cannot be empty');
     }
   };
+  // console.log(reviewRequestStatus);
+  // console.log(reviewRequestData);
+
+  useEffect(() => {
+    props.onReviewData(reviewRequestStatus, reviewRequestData);
+  }, [props.onReviewData, reviewRequestStatus, reviewRequestData]);
 
   return (
     <>
