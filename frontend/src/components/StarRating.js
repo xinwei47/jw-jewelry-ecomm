@@ -19,9 +19,10 @@ const StarRating = (props) => {
     setRating(event.target.getAttribute('data-star-id') || rating);
   };
 
+  const { onRatingSelected } = props;
   useEffect(() => {
-    props.onRatingSelected(rating);
-  }, [props.onRatingSelected, rating]);
+    onRatingSelected(rating);
+  }, [onRatingSelected, rating]);
 
   return (
     <div

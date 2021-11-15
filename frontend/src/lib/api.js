@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export const fetchCategories = async () => {
-  const { data } = await axios.get('/categories');
+  const { data } = await axios.get('/shop/categories');
   return data;
 };
 
@@ -21,8 +21,27 @@ export const fetchSingleProduct = async (productName, productId) => {
   return data;
 };
 
+export const signUpUser = async (userInput) => {
+  const { data } = await axios.post('/user/sign-up', {
+    ...userInput,
+  });
+  return data;
+};
+
+export const signInUser = async (userInput) => {
+  const { data } = await axios.post('/user/sign-in', {
+    ...userInput,
+  });
+  return data;
+};
+
+export const signOutUser = async () => {
+  await axios.get('/user/logout');
+  return;
+};
+
 export const fetchUserData = async (token) => {
-  const { data } = await axios.get('/profile', {
+  const { data } = await axios.get('/user/profile', {
     headers: {
       // add the jwt token in headers and send with the request
       Authorization: `Bearer ${token}`,
@@ -31,8 +50,28 @@ export const fetchUserData = async (token) => {
   return data;
 };
 
+export const changeUserPassword = async (
+  token,
+  enteredOldPwd,
+  enteredNewPwd
+) => {
+  const { data } = await axios.put(
+    '/user/change-password',
+    {
+      oldPassword: enteredOldPwd,
+      newPassword: enteredNewPwd,
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  return data;
+};
+
 export const fetchWishList = async (token) => {
-  const { data } = await axios.get('/wishlist', {
+  const { data } = await axios.get('/user/wishlist', {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -43,36 +82,36 @@ export const fetchWishList = async (token) => {
 
 export const postReview = async (token, prodId, reviewContent) => {
   const { data } = await axios.post(
-    '/review',
-    { ...reviewContent, product: prodId },
+    `/${prodId}/reviews`,
+    { ...reviewContent },
     {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     }
   );
-  // console.log(data);
   return data;
 };
 
 export const fetchProductReviews = async (prodId) => {
-  const { data } = await axios.get(`/reviews/${prodId}`);
+  // const { data } = await axios.get(`/reviews/${prodId}`);
+  const { data } = await axios.get(`/${prodId}/reviews`);
   return data;
 };
 
-export const deleteReview = async (token, reviewId) => {
-  const { data } = await axios.delete(`/review/${reviewId}`, {
+export const deleteReview = async (token, prodId, reviewId) => {
+  const { data } = await axios.delete(`/${prodId}/reviews/${reviewId}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   });
-  console.log(data);
+  // console.log(data);
   return data;
 };
 
 export const addToWishlist = async (token, prodId) => {
   const { data } = await axios.post(
-    '/add-to-wishlist',
+    '/user/add-to-wishlist',
     { prodId },
     {
       headers: {
@@ -85,7 +124,7 @@ export const addToWishlist = async (token, prodId) => {
 
 export const removeFromWishlist = async (token, prodId) => {
   const { data } = await axios.put(
-    '/remove-from-wishlist',
+    '/user/remove-from-wishlist',
     { prodId },
     {
       headers: {
@@ -97,7 +136,7 @@ export const removeFromWishlist = async (token, prodId) => {
 };
 
 export const getUserId = async (token) => {
-  const { data: userId } = await axios.get('/get-authentication', {
+  const { data: userId } = await axios.get('/user/get-authentication', {
     headers: {
       Authorization: `Bearer ${token}`,
     },

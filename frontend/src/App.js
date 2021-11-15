@@ -39,16 +39,16 @@ function App() {
           <About />
         </Route>
 
-        <Route path='/sign-in'>
+        <Route path='/user/sign-in'>
           <Auth />
         </Route>
 
-        <Route path='/profile'>
+        <Route path='/user/profile'>
           {authCtx.isAuthenticated && <Profile />}
           {!authCtx.isAuthenticated && <Auth />}
         </Route>
 
-        <Route path='/wishlist'>
+        <Route path='/user/wishlist'>
           {authCtx.isAuthenticated && <Wishlist />}
           {!authCtx.isAuthenticated && <Auth />}
         </Route>

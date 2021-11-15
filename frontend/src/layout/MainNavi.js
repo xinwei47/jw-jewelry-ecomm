@@ -60,7 +60,7 @@ const MainNavi = () => {
           </li>
           {!authCtx.isAuthenticated && (
             <li className='nav__menu-item'>
-              <NavLink className='nav__menu-link' to='/sign-in'>
+              <NavLink className='nav__menu-link' to='/user/sign-in'>
                 Sign In/Up
               </NavLink>
             </li>
@@ -75,12 +75,12 @@ const MainNavi = () => {
                 <ul className='nav__nested-menu'>
                   {/* show 'profile', 'wishlist', 'logout' under 'My Account' as nested menu */}
                   <li className='nav__nested-item'>
-                    <NavLink className='nav__menu-link' to='/profile'>
+                    <NavLink className='nav__menu-link' to='/user/profile'>
                       My Profile
                     </NavLink>
                   </li>
                   <li className='nav__nested-item'>
-                    <NavLink className='nav__menu-link' to='/wishlist'>
+                    <NavLink className='nav__menu-link' to='/user/wishlist'>
                       My Wishlist
                     </NavLink>
                   </li>

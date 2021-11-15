@@ -5,6 +5,7 @@ import Button from '../UI/Button';
 
 import '../styles/components/_password-form.scss';
 import FlashMessage from '../components/FlashMessage';
+import { changeUserPassword } from '../lib/api';
 
 const PasswordForm = () => {
   const [flashMsg, setFlashMsg] = useState('');
@@ -15,21 +16,14 @@ const PasswordForm = () => {
 
   const submitChangePwdFormHandler = async (event) => {
     event.preventDefault();
-    const enteredCurrentPwd = currentPwdInputRef.current.value;
+    const enteredOldPwd = currentPwdInputRef.current.value;
     const enteredNewPwd = newPwdInputRef.current.value;
 
     try {
-      const { data } = await axios.put(
-        '/change-password',
-        {
-          oldPassword: enteredCurrentPwd,
-          newPassword: enteredNewPwd,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${authCtx.token}`,
-          },
-        }
+      const data = await changeUserPassword(
+        authCtx.token,
+        enteredOldPwd,
+        enteredNewPwd
       );
       setFlashMsg(data);
     } catch (error) {

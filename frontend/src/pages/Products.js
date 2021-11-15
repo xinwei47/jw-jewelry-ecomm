@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 
 import { ProductsGallery } from '../components/Gallery';
@@ -11,6 +11,8 @@ import LoadingSpinner from '../components/LoadingSpinner';
 import Error from '../components/Error';
 
 const Products = () => {
+  const [isLoading, setIsLoading] = useState(false);
+
   const { category } = useParams();
   const history = useHistory();
 
@@ -63,35 +65,46 @@ const Products = () => {
     [category, history, productsRequest]
   );
 
-  console.log(productsStatus);
+  // ***** NOT WORKING *****
+  // if (productsStatus === 'pending') {
+  //   // setIsLoading(true);
+  //   return <LoadingSpinner />;
+  // }
 
-  console.log(categoriesStatus);
   if (productsStatus === 'error') {
     return (
       <Error errStatus={productsError.status} errMsg={productsError.data} />
     );
   }
 
+  console.log(productsStatus);
+  // console.log(isLoading);
+
   return (
-    <div className='products'>
-      <Sidebar
-        className='products__sidebar'
-        menuList={categories}
-        onFiltersSubmittedData={submittedFilterResultsHandler}
-      />
-      <div className='products__content'>
-        <h3 className=' heading--3 products__heading'>
-          {category === 'all' ? 'Shop ' : ''}
-          {category}
-        </h3>
-        <p className='products__count'>{productsCount} items</p>
-        <ProductsGallery
-          className='products__gallery'
-          type='products'
-          items={products}
+    <>
+      {/* {isLoading && <LoadingSpinner />} */}
+      {/* {!isLoading && ( */}
+      <div className='products'>
+        <Sidebar
+          className='products__sidebar'
+          menuList={categories}
+          onFiltersSubmittedData={submittedFilterResultsHandler}
         />
+        <div className='products__content'>
+          <h3 className=' heading--3 products__heading'>
+            {category === 'all' ? 'Shop ' : ''}
+            {category}
+          </h3>
+          <p className='products__count'>{productsCount} items</p>
+          <ProductsGallery
+            className='products__gallery'
+            type='products'
+            items={products}
+          />
+        </div>
       </div>
-    </div>
+      {/* )} */}
+    </>
   );
 };
 

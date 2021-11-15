@@ -9,17 +9,14 @@ import useHttp from '../hooks/use-http';
 import '../styles/pages/_home.scss';
 
 const Home = () => {
-  const {
-    sendRequest: categoriesRequest,
-    // status: categoriesStatus,
-    data: categories,
-  } = useHttp(fetchCategories);
+  const { sendRequest: categoriesRequest, data: categories } = useHttp(
+    fetchCategories
+  );
 
   useEffect(() => {
     categoriesRequest();
   }, [categoriesRequest]);
 
-  const aboutBtnClickHandler = () => {};
   return (
     <>
       <Banner src='images/banner.jpg'>
@@ -49,9 +46,9 @@ const Home = () => {
           <h3 className='about-section__heading'>About</h3>
           <p className='about-section__text'>Ethically made.</p>
           <p className='about-section__text'>Designed to last.</p>
-          <Button className='btn-primary' onClick={aboutBtnClickHandler}>
-            Learn more
-          </Button>
+          <Link to='/about'>
+            <Button className='btn-primary'>Learn more</Button>
+          </Link>
         </div>
       </section>
     </>

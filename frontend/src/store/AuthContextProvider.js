@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import axios from 'axios';
 import AuthContext from './auth-context';
+import { signInUser, signOutUser, signUpUser } from '../lib/api';
 
 const AuthContextProvider = (props) => {
   const initialToken = sessionStorage.getItem('token');
@@ -14,10 +14,7 @@ const AuthContextProvider = (props) => {
 
   const registerHandler = async (userInputData) => {
     try {
-      const { data } = await axios.post('/sign-up', {
-        ...userInputData,
-      });
-      // console.log(data);
+      const data = await signUpUser(userInputData);
       if (data.token) {
         const { token } = data;
         setToken(token);
@@ -29,9 +26,7 @@ const AuthContextProvider = (props) => {
   };
 
   const loginHandler = async (userInputData) => {
-    const { data } = await axios.post('/sign-in', {
-      ...userInputData,
-    });
+    const data = await signInUser(userInputData);
 
     if (data.token) {
       const { token, wishlist } = data;
@@ -44,9 +39,7 @@ const AuthContextProvider = (props) => {
 
   const logoutHandler = async () => {
     try {
-      const { data } = await axios.get('/logout');
-      console.log(data);
-      // await axios.get('/logout');
+      await signOutUser();
       setToken(null);
       setWishlist(null);
       sessionStorage.removeItem('token');

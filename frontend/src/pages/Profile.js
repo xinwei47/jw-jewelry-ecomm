@@ -17,8 +17,8 @@ const Profile = () => {
     error,
   } = useHttp(fetchUserData);
 
-  console.log(userDataStatus);
-  console.log(error);
+  // console.log(userDataStatus);
+  // console.log(error);
 
   useEffect(() => {
     sendUserDataRequest(token);

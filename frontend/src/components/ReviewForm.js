@@ -11,11 +11,10 @@ import StarRating from './StarRating';
 const ReviewForm = (props) => {
   const authCtx = useContext(AuthContext);
   const reviewInputRef = useRef();
-  // const ratingInputRef = useRef();
   const [rating, setRating] = useState();
 
   const { productId } = useParams();
-
+  // console.log(productId);
   const {
     sendRequest: reviewRequest,
     status: reviewRequestStatus,
@@ -54,12 +53,11 @@ const ReviewForm = (props) => {
       console.log('Rating and Review cannot be empty');
     }
   };
-  // console.log(reviewRequestStatus);
-  // console.log(reviewRequestData);
 
+  const { onReviewData } = props;
   useEffect(() => {
-    props.onReviewData(reviewRequestStatus, reviewRequestData);
-  }, [props.onReviewData, reviewRequestStatus, reviewRequestData]);
+    onReviewData(reviewRequestStatus, reviewRequestData);
+  }, [onReviewData, reviewRequestStatus, reviewRequestData]);
 
   return (
     <>

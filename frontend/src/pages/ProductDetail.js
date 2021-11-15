@@ -58,8 +58,8 @@ const ProductDetail = () => {
   const {
     sendRequest: deleteReviewRequest,
     data: deleteReviewData,
-    status: deleteReviewStatus,
-    error: deleteReviewError,
+    // status: deleteReviewStatus,
+    // error: deleteReviewError,
   } = useHttp(deleteReview);
 
   useEffect(() => {
@@ -127,7 +127,7 @@ const ProductDetail = () => {
 
   const deleteReviewHandler = async (reviewId) => {
     // try {
-    await deleteReviewRequest(authCtx.token, reviewId);
+    await deleteReviewRequest(authCtx.token, productId, reviewId);
     // if the review is deleted successfully, refetch reviews data
     await reviewsRequest(productId);
     // setFlashMsg(deleteReviewData);
@@ -165,14 +165,11 @@ const ProductDetail = () => {
     calcProdRating(reviews);
   };
 
-  // const [reviewAddedStatus, setReviewAddedStatus] = useState(null);
-  // const [reviewAddedMsg, setReviewAddedMsg] = useState(null);
-
   const reviewDataHandler = useCallback((reviewStatus, reviewMsg) => {
     setFlashMsg(reviewMsg);
   }, []);
 
-  console.log(flashMsg);
+  // console.log(flashMsg);
 
   useEffect(() => {
     if (reviews && reviews.length !== 0) {
@@ -182,13 +179,9 @@ const ProductDetail = () => {
 
   // display error page if no product is found
   if (productStatus === 'error') {
-    // console.log(productStatus);
-    // console.log(product);
-    // console.log(productError);
     return <Error errStatus={productError.status} errMsg={productError.data} />;
   }
 
-  // console.log(reviews);
   return (
     <div className='product'>
       <div className='product__content'>

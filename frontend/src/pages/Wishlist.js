@@ -5,7 +5,6 @@ import useHttp from '../hooks/use-http';
 
 import '../styles/pages/_wishlist.scss';
 import { useEffect } from 'react';
-import Card from '../components/Card';
 import { ProductsGallery } from '../components/Gallery';
 
 const Wishlist = () => {
@@ -21,8 +20,6 @@ const Wishlist = () => {
   useEffect(() => {
     sendWishlistRequest(token);
   }, [sendWishlistRequest, token]);
-
-  console.log(wishlist);
 
   return (
     <>
