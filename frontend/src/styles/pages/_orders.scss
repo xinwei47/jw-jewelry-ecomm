@@ -1,0 +1,25 @@
+@import '../abstract/variables.scss';
+
+.orders {
+  grid-column: center-start/center-end;
+
+  &__heading {
+    margin-top: $margin-sm;
+    font-size: 3.2rem !important;
+  }
+
+  &__column-headings {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: $grid-gap-xs;
+    margin-top: $margin-md;
+  }
+
+  &__column-heading {
+    font-size: 2rem;
+  }
+
+  &__list {
+    margin-top: $margin-sm;
+  }
+}

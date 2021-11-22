@@ -1,32 +1,40 @@
 import { useContext, useState, useEffect, useRef } from 'react';
 import AuthContext from '../store/auth-context';
-import { fetchUserData } from '../lib/api';
+import { fetchUserData, getUserId, postOrder } from '../lib/api';
 
 import Button from '../UI/Button';
 import '../styles/pages/_checkout.scss';
 import '../styles/components/_form.scss';
 import CartContext from '../store/cart-context';
 import OrderSummary from '../components/OrderSummary';
+import AddressFormInput from '../components/AddressFormInput';
+import PaymentFormInput from '../components/PaymentFormInput';
 
-const Checkout = () => {
+import { useHistory } from 'react-router-dom';
+
+const Checkout = (props) => {
   const authCtx = useContext(AuthContext);
   const cartCtx = useContext(CartContext);
+  const history = useHistory();
+
   const [email, setEmail] = useState('');
   const [checkedBillingAddress, setCheckedBillingAddress] = useState(true);
-
   const [freeShipping, setFreeShipping] = useState(0);
   const [expeditedShipping, setExpeditedShipping] = useState(0);
   const [overnightShipping, setOvernightShipping] = useState(0);
 
+  const emailInputRef = useRef();
   const freeShippingInputRef = useRef();
   const expeditedShippingInputRef = useRef();
   const overnightShippingInputRef = useRef();
+  const firstNameInputRef = useRef();
+  const lasttNameInputRef = useRef();
 
-  const billingAddressHandler = () => {
+  const billingAddressCheckHandler = () => {
     setCheckedBillingAddress((prevState) => !prevState);
   };
 
-  const emailChangeHandler = () => {};
+  const emailChangeHandler = (event) => setEmail(event.target.value);
 
   useEffect(() => {
     if (authCtx.token) {
@@ -38,6 +46,102 @@ const Checkout = () => {
     }
   }, [authCtx.token]);
 
+  const [shippingFee, setShippingFee] = useState(0);
+  useEffect(() => {
+    setShippingFee(
+      Math.max(freeShipping, expeditedShipping, overnightShipping)
+    );
+  }, [freeShipping, expeditedShipping, overnightShipping]);
+
+  // set defaul userId as null that matches the Order model
+  const [userId, setUserId] = useState();
+  useEffect(() => {
+    const getUser = async () => {
+      if (authCtx.token) {
+        const userId = await getUserId(authCtx.token);
+        setUserId(userId);
+      }
+    };
+    getUser();
+  }, [authCtx.token]);
+
+  const checkoutformSubmitHandler = async (event) => {
+    event.preventDefault();
+
+    // redirect user to order-confirmation page
+    // meanwhile pass the new order data to the order-confirmation component
+    const orderData = {
+      user: userId,
+      name: {
+        firstName: firstNameInputRef.current.value,
+        lastName: lasttNameInputRef.current.value,
+      },
+      email,
+      orderItems: cartCtx.products,
+      shipping: {
+        method:
+          shippingFee === 0
+            ? '5-Day Free Shipping'
+            : shippingFee === 8
+            ? '2-Day Expedited Shipping'
+            : 'Overnight Shipping',
+        cost: shippingFee,
+      },
+      taxAmount: cartCtx.taxAmount,
+      totalAmount: cartCtx.totalAmount,
+      shippingAddress,
+      billingAddress,
+    };
+
+    // clear cart
+    cartCtx.onClearCart();
+    const order = await postOrder(userId, orderData);
+
+    history.push({
+      pathname: '/user/order-confirmation',
+      // state: order,
+      state: order._id,
+    });
+  };
+
+  const [shippingAddress, setShippingAddress] = useState({
+    shippingStreet: '',
+    shippingCity: '',
+    shippingState: '',
+    shippingZip: '',
+  });
+
+  const [billingAddress, setBillingAddress] = useState({});
+  useEffect(() => {
+    if (checkedBillingAddress) {
+      setBillingAddress({
+        billingStreet: shippingAddress.shippingStreet,
+        billingCity: shippingAddress.shippingCity,
+        billingState: shippingAddress.shippingState,
+        billingZip: shippingAddress.shippingZip,
+      });
+    } else {
+      setBillingAddress({
+        billingStreet: '',
+        billingCity: '',
+        billingState: '',
+        billingZip: '',
+      });
+    }
+  }, [checkedBillingAddress, shippingAddress]);
+
+  const shippingAddressInputHandler = (event) => {
+    const { name, value } = event.target;
+    setShippingAddress((prevState) => ({ ...prevState, [name]: value }));
+  };
+
+  const billingAddressInputHandler = (event) => {
+    // if (!checkedBillingAddress) {
+    const { name, value } = event.target;
+    setBillingAddress((prevState) => ({ ...prevState, [name]: value }));
+    // }
+  };
+
   return (
     <>
       <div className='checkout'>
@@ -45,15 +149,14 @@ const Checkout = () => {
         <h1 className=''>Checkout</h1>
 
         <div className='checkout__container'>
-          <form action='' className='form'>
-            {/* only ask for email for visitors  */}
+          <form action='' className='form' onSubmit={checkoutformSubmitHandler}>
+            {/* only ask for email for visitors. auto fill in email for logged-in users  */}
             <div className='form__group-control checkout__email'>
               <label htmlFor='email'>Email</label>
               <input
-                type='text'
+                type='email'
                 id='email'
                 value={email ? email : ''}
-                disabled={email ? true : false}
                 onChange={emailChangeHandler}
               />
             </div>
@@ -65,28 +168,27 @@ const Checkout = () => {
               <div className='form__section-content'>
                 <div className='form__group-control'>
                   <label htmlFor='firstName'>First Name</label>
-                  <input type='text' id='firstName' />
+                  <input
+                    ref={firstNameInputRef}
+                    type='text'
+                    id='firstName'
+                    name='firstName'
+                  />
                 </div>
                 <div className='form__group-control'>
-                  <label htmlFor='lasttName'>Last Name</label>
-                  <input type='text' id='lasttName' />
+                  <label htmlFor='lastName'>Last Name</label>
+                  <input
+                    ref={lasttNameInputRef}
+                    type='text'
+                    id='lastName'
+                    name='lastName'
+                  />
                 </div>
-                <div className='form__group-control'>
-                  <label htmlFor='street'>Street Address</label>
-                  <input type='text' id='street' />
-                </div>
-                <div className='form__group-control'>
-                  <label htmlFor='city'>City</label>
-                  <input type='text' id='city' />
-                </div>
-                <div className='form__group-control'>
-                  <label htmlFor='state'>State</label>
-                  <input type='text' id='state' />
-                </div>
-                <div className='form__group-control'>
-                  <label htmlFor='zip'>Zip Code</label>
-                  <input type='text' id='zip' />
-                </div>
+
+                <AddressFormInput
+                  addressType='shipping'
+                  onAddressInputChange={shippingAddressInputHandler}
+                />
               </div>
             </div>
             <hr />
@@ -94,30 +196,7 @@ const Checkout = () => {
             <div className='form__section'>
               <h3 className='heading--3 form__section-heading'>2. Payment</h3>
               <div className='form__section-content'>
-                <div className='form__group-control'>
-                  <label htmlFor='cardNumber'>Card Number</label>
-                  <input type='text' id='cardNumber' />
-                </div>
-                <div className='form__group-control'>
-                  <label htmlFor='cardMonth'>MM</label>
-                  <input type='text' id='cardMonth' />
-                </div>
-                <div className='form__group-control'>
-                  <label htmlFor='cardYear'>YY</label>
-                  <input type='text' id='cardYear' />
-                </div>
-                <div className='form__group-control'>
-                  <label htmlFor='cardCvv'>CVV/CVC</label>
-                  <input type='text' id='cardCvv' />
-                </div>
-                <div className='form__group-control'>
-                  <label htmlFor='cardFirstName'>First Name</label>
-                  <input type='text' id='cardFirstName' />
-                </div>
-                <div className='form__group-control'>
-                  <label htmlFor='cardLastName'>Last Name</label>
-                  <input type='text' id='cardLastName' />
-                </div>
+                <PaymentFormInput />
               </div>
             </div>
 
@@ -128,7 +207,7 @@ const Checkout = () => {
                   <input
                     type='checkbox'
                     id='billingAddress'
-                    onChange={billingAddressHandler}
+                    onChange={billingAddressCheckHandler}
                     checked={checkedBillingAddress}
                   />
                   <label htmlFor='billingAddress'>
@@ -136,24 +215,10 @@ const Checkout = () => {
                   </label>
                 </div>
                 {!checkedBillingAddress && (
-                  <>
-                    <div className='form__group-control'>
-                      <label htmlFor='street'>Street Address</label>
-                      <input type='text' id='street' />
-                    </div>
-                    <div className='form__group-control'>
-                      <label htmlFor='city'>City</label>
-                      <input type='text' id='city' />
-                    </div>
-                    <div className='form__group-control'>
-                      <label htmlFor='state'>State</label>
-                      <input type='text' id='state' />
-                    </div>
-                    <div className='form__group-control'>
-                      <label htmlFor='zip'>Zip Code</label>
-                      <input type='text' id='zip' />
-                    </div>
-                  </>
+                  <AddressFormInput
+                    addressType='billing'
+                    onAddressInputChange={billingAddressInputHandler}
+                  />
                 )}
               </div>
             </div>
@@ -225,11 +290,7 @@ const Checkout = () => {
               <h3 className='heading--3'>Order Summary</h3>
               <OrderSummary
                 className='checkout__order-summary'
-                shippingCost={Math.max(
-                  freeShipping,
-                  expeditedShipping,
-                  overnightShipping
-                )}
+                shippingCost={shippingFee}
               />
             </div>
           )}

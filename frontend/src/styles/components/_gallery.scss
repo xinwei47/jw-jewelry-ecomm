@@ -1,0 +1,7 @@
+@import '../abstract/variables.scss';
+
+.prod-gallery {
+  &__btn {
+    margin-top: $margin-xs;
+  }
+}

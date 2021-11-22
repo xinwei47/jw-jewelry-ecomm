@@ -1,0 +1,120 @@
+@import '../abstract/variables.scss';
+
+.order {
+  margin-top: $margin-md;
+  background-color: rgba($color-primary, 0.1);
+  padding: $padding-md $padding-lg;
+
+  &__summary-heading {
+    font-size: 2.4rem !important;
+    margin-bottom: $margin-sm;
+  }
+
+  &__id {
+    margin-bottom: $margin-xxs;
+  }
+
+  &__id > span,
+  &__date > span {
+    font-weight: 700;
+  }
+
+  &__summary {
+    margin-top: $margin-md;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+
+    &-section {
+      &:nth-child(3) {
+        margin-top: $margin-sm;
+      }
+
+      &:nth-child(4) {
+        margin-top: $margin-sm;
+      }
+    }
+  }
+
+  &__section-heading {
+    margin-bottom: $margin-xs;
+  }
+
+  &__items {
+    list-style: none;
+    margin-top: $margin-lg;
+
+    &-heading {
+      display: flex;
+      justify-content: space-between;
+    }
+  }
+
+  &__divider {
+    margin-top: $margin-xs;
+  }
+
+  &__items-list {
+    margin-top: $margin-sm;
+  }
+  &__item {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: $grid-gap-xs;
+
+    &:not(:first-child) {
+      margin-top: $margin-sm;
+    }
+  }
+
+  &__image-container {
+    width: 10rem;
+    height: 10rem;
+  }
+
+  &__item-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  &__item-details {
+    grid-column: 2/6;
+  }
+
+  &__item-name {
+    text-transform: capitalize;
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin-bottom: $margin-xs;
+  }
+
+  &__item-price {
+  }
+
+  &__item-qty {
+  }
+
+  &__item-amount {
+    grid-column: 6/7;
+    justify-self: flex-end;
+    font-weight: 700;
+  }
+
+  &__cost {
+    margin-top: $margin-md;
+  }
+
+  &__cost-item {
+    display: flex;
+    justify-content: space-between;
+    font-weight: 700;
+
+    &:not(&:first-child) {
+      margin-top: $margin-xs;
+    }
+
+    &:last-child {
+      font-size: 1.8rem;
+    }
+  }
+}

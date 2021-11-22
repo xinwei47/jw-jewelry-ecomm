@@ -12,6 +12,8 @@ const MainNavi = () => {
   const node = useRef();
 
   const [showAcctMenu, setShowAcctMenu] = useState(false);
+  const [btnAnimated, setBtnAnimated] = useState(false);
+
   const toggleAcctMenuHandler = () => {
     setShowAcctMenu((prevState) => !prevState);
   };
@@ -38,7 +40,23 @@ const MainNavi = () => {
     };
   }, []);
 
-  // console.log(showAcctMenu);
+  // apply dynamic styling to "cart" navi link
+  const btnClasses = `nav__cart-btn ${btnAnimated ? 'bump' : ''}`;
+  // const btnClasses = btnAnimated ? 'bump' : '';
+
+  useEffect(() => {
+    if (cartCtx.products.length === 0) return;
+    setBtnAnimated(true);
+
+    const timeoutId = setTimeout(() => {
+      setBtnAnimated(false);
+    }, 300);
+
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, [cartCtx.products]);
+
   return (
     <header className='nav'>
       <div className='nav__logo'>
@@ -85,6 +103,11 @@ const MainNavi = () => {
                     </NavLink>
                   </li>
                   <li className='nav__nested-item'>
+                    <NavLink className='nav__menu-link' to='/user/orders'>
+                      My Orders
+                    </NavLink>
+                  </li>
+                  <li className='nav__nested-item'>
                     <Button
                       className='btn btn-tertiary'
                       onClick={logoutHandler}
@@ -98,8 +121,10 @@ const MainNavi = () => {
           )}
 
           <li className='nav__menu-item'>
-            <NavLink className='nav__menu-link nav__cart-link' to='/cart'>
-              Cart ({cartCtx.totalCount})
+            <NavLink className='nav__menu-link' to='/cart'>
+              <Button className={btnClasses}>
+                Cart ({cartCtx.totalCount})
+              </Button>
             </NavLink>
           </li>
         </ul>

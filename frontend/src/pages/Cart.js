@@ -8,14 +8,13 @@ import OrderSummary from '../components/OrderSummary';
 
 const Cart = () => {
   const cartCtx = useContext(CartContext);
-  console.log(cartCtx);
   return (
     <div className='cart'>
       <h1 className='heading--1 cart__heading'>
         My Cart ({cartCtx.products.length})
       </h1>
 
-      {cartCtx.products && (
+      {cartCtx.products.length > 0 && (
         <>
           <OrderSummary className='cart__order-summary' shippingCost={0} />
           <Link to='/checkout'>
@@ -23,7 +22,7 @@ const Cart = () => {
           </Link>
         </>
       )}
-      {cartCtx.totalAmount === 0 && (
+      {cartCtx.products.length === 0 && cartCtx.totalAmount === 0 && (
         <h3 className='heading--3 cart__empty'>Your cart is empty.</h3>
       )}
     </div>

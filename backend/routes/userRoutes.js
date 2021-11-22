@@ -10,8 +10,11 @@ import {
   getUserWishlist,
   loginUser,
   logoutUser,
+  postUserOrder,
   registerUser,
   removeFromUserWishlist,
+  getUserOrder,
+  getUserOrders,
 } from '../controllers/userControllers.js';
 
 router.route('/profile').get(getUserProfile);
@@ -34,5 +37,12 @@ router
 router
   .route('/get-authentication')
   .get(passport.authenticate('jwt', { session: false }), getUserAuth);
+
+router
+  .route('/orders')
+  .post(postUserOrder)
+  .get(passport.authenticate('jwt', { session: false }), getUserOrders);
+
+router.route('/orders/:orderId').get(getUserOrder);
 
 export default router;

@@ -4,26 +4,25 @@ import Button from '../UI/Button';
 import StarRatingView from './StarRatingView';
 
 import '../styles/components/_review-item.scss';
+import mongoDateReformat from '../lib/reformat-date';
+import { mongo } from 'mongoose';
 
 const ReviewItem = (props) => {
   const authCtx = useContext(AuthContext);
 
   const [reviewDate, setReviewDate] = useState();
 
-  // remove the timestamp from the date received from mongoDB
-  const mongoDateReformat = useCallback((date) => {
-    const newDate = new Date(date);
-    const mm = newDate.getMonth();
-    const dd = newDate.getDate();
-    const yy = newDate.getFullYear();
-
-    const reformatDate = `${mm}/${dd}/${yy}`;
-    setReviewDate(reformatDate);
-  }, []);
+  const reformatDate = useCallback(
+    (date) => {
+      const newDate = mongoDateReformat(date);
+      setReviewDate(newDate);
+    },
+    [mongoDateReformat]
+  );
 
   useEffect(() => {
-    mongoDateReformat(props.review.date);
-  }, [mongoDateReformat, props.review.date]);
+    reformatDate(props.review.date);
+  }, [reformatDate, props.review.date]);
 
   return (
     <li className='review'>

@@ -56,6 +56,15 @@ const cartReducer = (prevState, action) => {
     sessionStorage.setItem('cart', JSON.stringify(updatedCartState));
     return updatedCartState;
   }
+
+  if (action.type === 'CLEAR') {
+    sessionStorage.removeItem('cart');
+    return {
+      products: [],
+      totalCount: 0,
+      totalAmount: 0,
+    };
+  }
 };
 
 const CartContextProvider = (props) => {
@@ -69,7 +78,6 @@ const CartContextProvider = (props) => {
       };
 
   const [cartState, cartDispatch] = useReducer(cartReducer, initialCartState);
-
   const addItemHandler = (prodId, name, price, images) => {
     // console.log(prodId, name, price);
     cartDispatch({ type: 'ADD_ITEM', prodId, name, price, images });
@@ -80,12 +88,18 @@ const CartContextProvider = (props) => {
     cartDispatch({ type: 'REMOVE_ITEM', prodId, price });
   };
 
+  const clearCartHandler = () => {
+    cartDispatch({ type: 'CLEAR' });
+  };
+
   const cartContextValue = {
     products: cartState.products,
     totalCount: cartState.totalCount,
     totalAmount: cartState.totalAmount,
+    taxAmount: cartState.totalAmount * 0.1,
     onAddItem: addItemHandler,
     onRemoveItem: removeItemHandler,
+    onClearCart: clearCartHandler,
   };
   return (
     <CartContext.Provider value={cartContextValue}>

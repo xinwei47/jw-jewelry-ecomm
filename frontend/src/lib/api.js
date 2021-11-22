@@ -1,4 +1,5 @@
 import axios from 'axios';
+import OrderSummary from '../components/OrderSummary';
 
 export const fetchCategories = async () => {
   const { data } = await axios.get('/shop/categories');
@@ -142,4 +143,26 @@ export const getUserId = async (token) => {
     },
   });
   return userId;
+};
+
+export const postOrder = async (userId, orderData) => {
+  const { data: order } = await axios.post('/user/orders', {
+    orderData: { ...orderData },
+    userId,
+  });
+  return order;
+};
+
+export const getSingleOrder = async (orderId) => {
+  const { data: order } = await axios.get(`/user/orders/${orderId}`);
+  return order;
+};
+
+export const getOrders = async (token) => {
+  const { data: orders } = await axios.get('/user/orders', {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return orders;
 };

@@ -6,6 +6,15 @@ const orderSchema = new Schema({
   user: {
     type: Schema.Types.ObjectId,
     ref: 'User',
+    default: null,
+  },
+  name: {
+    firstName: { type: String, required: true },
+    lastName: { type: String, required: true },
+  },
+  email: {
+    type: String,
+    required: true,
   },
   orderItems: [
     {
@@ -15,28 +24,39 @@ const orderSchema = new Schema({
       },
       qty: {
         type: Number,
-        required: true,
+        // required: true,
         default: 1,
       },
     },
   ],
-  taxPrice: {
+  shipping: {
+    method: { type: String, required: true },
+    cost: { type: Number, required: true },
+  },
+  taxAmount: {
     type: Number,
     required: true,
   },
-  shippingPrice: {
+  totalAmount: {
     type: Number,
     required: true,
   },
-  totalPrice: {
-    type: Number,
-    required: true,
+  shippingAddress: {
+    shippingStreet: { type: String, required: true },
+    shippingCity: { type: String, required: true },
+    shippingState: { type: String, required: true },
+    shippingZip: { type: String, required: true },
   },
-  ShippingAddress: {
-    address: { type: String, required: true },
-    city: { type: String, required: true },
-    zipCode: { type: String, required: true },
-    country: { type: String, required: true },
+  billingAddress: {
+    billingStreet: { type: String, required: true },
+    billingCity: { type: String, required: true },
+    billingState: { type: String, required: true },
+    billingZip: { type: String, required: true },
+  },
+  date: {
+    type: Date,
+    default: Date.now,
+    timestamps: false,
   },
 });
 

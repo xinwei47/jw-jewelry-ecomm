@@ -52,6 +52,9 @@
   &__item-summary {
   }
 
+  &__item-detail {
+    margin-bottom: $margin-xs;
+  }
   &__item-name {
     text-transform: capitalize;
   }
@@ -61,7 +64,7 @@
 
   &__actions {
     display: flex;
-    margin-top: $margin-xs;
+    // margin-top: $margin-xs;
   }
 
   &__delete-item {
@@ -72,7 +75,6 @@
   }
 
   &__total-amt {
-    // margin-top: $margin-md;
   }
 
   &__checkout-btn {

@@ -15,6 +15,12 @@
     grid-column: 1/2;
   }
 
+  &__err-msg {
+    color: $color-red;
+    font-weight: 700;
+    margin-bottom: $margin-xs;
+  }
+
   & input {
     font-family: inherit;
     font-size: inherit;

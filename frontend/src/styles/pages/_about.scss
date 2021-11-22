@@ -3,6 +3,7 @@
 .about {
   grid-column: center-start/center-end;
   margin-top: $margin-sm;
+
   &__row {
     display: flex;
     align-items: center;
@@ -18,9 +19,31 @@
     &:nth-child(3) {
       transform: translateY(-25%);
     }
+
+    @media only screen and (max-width: $bp-xs) {
+      flex-direction: column;
+      &:not(:first-of-type) {
+        margin-top: $margin-md;
+      }
+
+      &:first-of-type {
+        margin-top: $margin-md;
+      }
+
+      &:nth-child(2) {
+        transform: translateY(0);
+      }
+      &:nth-child(3) {
+        transform: translateY(0);
+      }
+    }
   }
 
   &__heading {
+    @media only screen and (max-width: $bp-xs) {
+      align-self: flex-start;
+    }
+
     & > h1 {
       display: inline-block;
       background-color: $color-primary;
@@ -37,6 +60,15 @@
   &__img-container {
     width: 50vw;
     height: 60rem;
+
+    @media only screen and (max-width: $bp-xs) {
+      width: 100%;
+      height: 40rem;
+
+      &:nth-child(2) {
+        margin-top: $margin-sm;
+      }
+    }
   }
 
   &__img {
@@ -48,5 +80,13 @@
   &__text {
     width: 30vw;
     text-align: center;
+
+    @media only screen and (max-width: $bp-xs) {
+      width: 100%;
+
+      &:nth-child(2) {
+        margin-top: $margin-sm;
+      }
+    }
   }
 }

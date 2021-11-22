@@ -1,0 +1,20 @@
+@import '../abstract/variables.scss';
+
+.order-item {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  align-items: center;
+  margin: $margin-sm 0;
+  gap: $grid-gap-xs;
+
+  &__link {
+    // justify-self: end;
+  }
+
+  &__btn {
+    width: 100%;
+  }
+
+  &__divider {
+  }
+}

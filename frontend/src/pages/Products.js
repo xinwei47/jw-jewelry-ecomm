@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 
 import { ProductsGallery } from '../components/Gallery';
@@ -7,18 +7,18 @@ import { fetchCategories, fetchProducts } from '../lib/api';
 
 import '../styles/pages/_products.scss';
 import useHttp from '../hooks/use-http';
-import LoadingSpinner from '../components/LoadingSpinner';
+// import LoadingSpinner from '../components/LoadingSpinner';
 import Error from '../components/Error';
 
 const Products = () => {
-  const [isLoading, setIsLoading] = useState(false);
+  // const [isLoading, setIsLoading] = useState(false);
 
   const { category } = useParams();
   const history = useHistory();
 
   const {
     sendRequest: categoriesRequest,
-    status: categoriesStatus,
+    // status: categoriesStatus,
     data: categories,
   } = useHttp(fetchCategories);
 

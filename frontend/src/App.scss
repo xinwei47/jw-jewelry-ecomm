@@ -33,8 +33,7 @@ body {
   position: relative;
 
   min-height: 100vh;
-  // for development
-  padding-bottom: 150px;
+  padding-bottom: 100px;
 }
 
 #root {
@@ -46,6 +45,15 @@ body {
       [col-start] minmax(0, 12rem) [col-end]
     )
     [center-end] minmax(6rem, 1fr) [full-end];
+
+  @media only screen and (max-width: $bp-md) {
+    grid-template-columns:
+      [full-start] minmax(4rem, 1fr) [center-start] repeat(
+        12,
+        [col-start] minmax(0, 12rem) [col-end]
+      )
+      [center-end] minmax(4rem, 1fr) [full-end];
+  }
 }
 
 .heading--1 {
@@ -73,4 +81,8 @@ body {
 
 .hidden {
   display: none !important;
+}
+
+.divider {
+  color: rgba($color-primary, 0.4);
 }

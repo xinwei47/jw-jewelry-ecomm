@@ -19,7 +19,7 @@ const OrderSummary = (props) => {
         </div>
         <div className='order-summary__cost-item'>
           <p>Tax: </p>
-          <p>${(cartCtx.totalAmount * 0.1).toFixed(2)}</p>
+          <p>${cartCtx.taxAmount.toFixed(2)}</p>
         </div>
         <hr />
         <div className='order-summary__cost-item order-summary__total-amt'>
@@ -47,13 +47,15 @@ const OrderSummary = (props) => {
                 />
               </div>
               <div className='order-summary__item-summary'>
-                <h4 className='heading--4 order-summary__item-name'>
-                  {product.name}
-                </h4>
-                <p className='order-summary__item-price'>
-                  price: ${product.price}
-                </p>
-                <p className='order-summary__item-qty'>qty: {product.qty}</p>
+                <div className='order-summary__item-detail'>
+                  <h4 className='heading--4 order-summary__item-name'>
+                    {product.name}
+                  </h4>
+                  <p className='order-summary__item-price'>
+                    price: ${product.price}
+                  </p>
+                  <p className='order-summary__item-qty'>qty: {product.qty}</p>
+                </div>
                 <div className='order-summary__actions'>
                   <Button
                     className='btn-secondary order-summary__delete-item'

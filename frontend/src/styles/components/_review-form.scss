@@ -3,25 +3,20 @@
 .review-form {
   &__group-control {
     margin-top: $margin-sm;
+  }
 
-    &:first-child {
-      display: flex;
-      align-items: center;
-    }
+  &__rating {
+    display: flex;
   }
 
   &__rating-heading {
     margin-right: $margin-xs;
   }
 
-  &__range {
-  }
-
   &__text {
     width: 100%;
     font-family: inherit;
     font-size: inherit;
-    // outline: 1px solid $color-secondary;
     border-radius: 0;
     padding: $padding-xs;
 

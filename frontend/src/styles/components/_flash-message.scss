@@ -14,9 +14,12 @@
   }
 
   &__close-btn {
-    cursor: pointer;
+    border: none;
   }
 
   &__close-icon {
+    color: $color-white;
+    font-size: 1.6rem;
+    font-weight: 700;
   }
 }

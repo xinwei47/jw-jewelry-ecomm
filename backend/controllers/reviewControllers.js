@@ -1,7 +1,7 @@
 import Product from '../models/productModel.js';
 import Review from '../models/reviewModel.js';
 
-const postProdReview = async (req, res) => {
+const postProdReview = async (req, res, next) => {
   const { _id: userId } = req.user;
   const { text, rating } = req.body;
   const { prodId } = req.params;
@@ -24,13 +24,13 @@ const postProdReview = async (req, res) => {
   }
 };
 
-const getProdReviews = async (req, res) => {
+const getProdReviews = async (req, res, next) => {
   const { prodId } = req.params;
   const reviews = await Review.find({ product: prodId }).populate('author');
   res.json(reviews);
 };
 
-const deleteProdReview = async (req, res) => {
+const deleteProdReview = async (req, res, next) => {
   const { reviewId } = req.params;
 
   const review = await Review.findById(reviewId);

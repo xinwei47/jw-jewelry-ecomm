@@ -6,6 +6,7 @@ import { postReview } from '../lib/api';
 import useHttp from '../hooks/use-http';
 
 import '../styles/components/_review-form.scss';
+import '../styles/components/_form.scss';
 import StarRating from './StarRating';
 
 const ReviewForm = (props) => {
@@ -13,8 +14,10 @@ const ReviewForm = (props) => {
   const reviewInputRef = useRef();
   const [rating, setRating] = useState();
 
+  const [ratingHasError, setRatingHasError] = useState(false);
+  const [reviewHasError, setReviewHasError] = useState(false);
+
   const { productId } = useParams();
-  // console.log(productId);
   const {
     sendRequest: reviewRequest,
     status: reviewRequestStatus,
@@ -23,15 +26,16 @@ const ReviewForm = (props) => {
 
   const { token } = authCtx;
 
-  const ratingSelectedHandler = (rating) => {
-    setRating(rating);
+  const ratingSelectedHandler = (event) => {
+    setRating(event.target.getAttribute('data-star-id') || rating);
   };
 
   const reviewFormSubmitHandler = async (event) => {
     event.preventDefault();
     const reviewText = reviewInputRef.current.value;
-    // const reviewRating = ratingInputRef.current.value;
-    // const reviewRating = rating;
+
+    if (!!rating === false) setRatingHasError(true);
+    if (reviewText === '') setReviewHasError(true);
 
     if (reviewText && rating) {
       const reviewContent = {
@@ -40,14 +44,12 @@ const ReviewForm = (props) => {
       };
 
       await reviewRequest(token, productId, reviewContent);
-      // ratingInputRef.current.value = 3;
 
       // notify parent (ProductDetails) that a comment is added
       props.onAddedComment();
-      // console.log(reviewRequestData);
 
       reviewInputRef.current.value = '';
-      setRating(0);
+      setRating(0); // not working
     } else {
       // display error message
       console.log('Rating and Review cannot be empty');
@@ -67,16 +69,23 @@ const ReviewForm = (props) => {
         className='review-form'
       >
         <div className='review-form__group-control'>
-          <label className='review-form__rating-heading' htmlFor=''>
-            Rating:
-          </label>
-          <StarRating onRatingSelected={ratingSelectedHandler} />
+          {ratingHasError && (
+            <p className='form__err-msg'>Please select a rating.</p>
+          )}
+          <div className='review-form__rating'>
+            <label className='review-form__rating-heading' htmlFor=''>
+              Rating:
+            </label>
+            <StarRating onClickRating={ratingSelectedHandler} rating={rating} />
+          </div>
         </div>
         <div className='review-form__group-control'>
+          {reviewHasError && (
+            <p className='form__err-msg'>Review cannot be empty.</p>
+          )}
           <textarea
             id='reviewText'
             rows='4'
-            // cols="100"
             ref={reviewInputRef}
             placeholder='Enter your review...'
             className='review-form__text'

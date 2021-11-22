@@ -8,6 +8,11 @@
   align-items: center;
   background-color: $color-white;
 
+  @media only screen and (max-width: $bp-xs) {
+    display: flex;
+    flex-direction: column;
+  }
+
   &__logo {
   }
   &__logo-link {
@@ -28,16 +33,29 @@
   &__menu-list {
     list-style: none;
     display: flex;
+    align-items: center;
+
+    @media only screen and (max-width: $bp-xs) {
+      margin-top: $margin-xs;
+    }
   }
   &__menu-item {
     text-transform: uppercase;
     letter-spacing: 1px;
+
     &:not(&:last-child) {
       margin-right: $margin-md;
     }
+    @media only screen and (max-width: $bp-xxxs) {
+      &:not(&:last-child) {
+        margin-right: $margin-sm;
+      }
+    }
   }
   &__menu-link {
+    color: $color-primary;
     text-decoration: none;
+    text-transform: uppercase;
 
     &:link,
     &:visited,
@@ -83,5 +101,43 @@
     background-color: $color-primary;
     padding: 0.8rem $padding-sm;
     border-radius: $border-radius-sm;
+  }
+
+  &__cart-btn {
+    background-color: $color-primary;
+    color: $color-white;
+    padding: $padding-xxs $padding-sm;
+    border: none;
+
+    &:hover {
+      transform: translateY(-3px);
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
+  }
+}
+
+.bump {
+  animation: bump 300ms ease-out;
+  // transform: scale(1);
+}
+
+@keyframes bump {
+  0% {
+    transform: scale(1);
+  }
+  10% {
+    transform: scale(0.9);
+  }
+  30% {
+    transform: scale(1.1);
+  }
+  50% {
+    transform: scale(1.15);
+  }
+  100% {
+    transform: scale(1);
   }
 }

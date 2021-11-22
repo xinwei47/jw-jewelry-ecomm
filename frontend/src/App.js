@@ -13,6 +13,9 @@ import Wishlist from './pages/Wishlist';
 import Checkout from './pages/Checkout';
 import AuthContext from './store/auth-context';
 import CartContext from './store/cart-context';
+import OrderConfirmation from './pages/OrderConfirmation';
+import Orders from './pages/Orders';
+import Order from './pages/Order';
 
 import './App.scss';
 
@@ -51,6 +54,20 @@ function App() {
         <Route path='/user/wishlist'>
           {authCtx.isAuthenticated && <Wishlist />}
           {!authCtx.isAuthenticated && <Auth />}
+        </Route>
+
+        <Route path='/user/orders/:orderId'>
+          {authCtx.isAuthenticated && <Order />}
+          {!authCtx.isAuthenticated && <Auth />}
+        </Route>
+
+        <Route path='/user/orders'>
+          {authCtx.isAuthenticated && <Orders />}
+          {!authCtx.isAuthenticated && <Auth />}
+        </Route>
+
+        <Route path='/user/order-confirmation'>
+          <OrderConfirmation />
         </Route>
 
         <Route path='/cart'>

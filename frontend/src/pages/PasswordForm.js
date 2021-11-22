@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { useRef, useContext, useState } from 'react';
 import AuthContext from '../store/auth-context';
 import Button from '../UI/Button';
@@ -26,14 +25,22 @@ const PasswordForm = () => {
         enteredNewPwd
       );
       setFlashMsg(data);
+      currentPwdInputRef.current.value = '';
+      newPwdInputRef.current.value = '';
     } catch (error) {
       setFlashMsg(error.response.data);
     }
   };
 
+  const clearFlashHandler = () => {
+    setFlashMsg('');
+  };
+
   return (
     <>
-      {flashMsg.length !== 0 && <FlashMessage>{flashMsg}</FlashMessage>}
+      {flashMsg.length !== 0 && (
+        <FlashMessage closeFlash={clearFlashHandler}>{flashMsg}</FlashMessage>
+      )}
       <form
         action=''
         className='form password-form'

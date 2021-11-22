@@ -11,7 +11,7 @@ const getSingleProduct = async (req, res, next) => {
   }
 };
 
-const getProducts = async (req, res) => {
+const getProducts = async (req, res, next) => {
   try {
     const { category } = req.params;
     const paramObj = req.query;
@@ -33,7 +33,7 @@ const getProducts = async (req, res) => {
   }
 };
 
-const getCategories = async (req, res) => {
+const getCategories = async (req, res, next) => {
   const categories = await Category.find({});
   res.json(categories);
 };

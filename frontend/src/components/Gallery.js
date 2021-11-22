@@ -1,4 +1,7 @@
 import Card from './Card';
+import Button from '../UI/Button';
+
+import '../styles/components/_gallery.scss';
 
 export const CategoriesGallery = (props) => {
   return (
@@ -27,15 +30,27 @@ export const ProductsGallery = (props) => {
         const linkName = item.name.split(' ').join('-');
         // console.log(linkName);
         return (
-          <Card
-            key={item._id}
-            link={`/shop/products/${linkName}/${item._id}`}
-            src={item.images[0]}
-            title={item.name}
-            alt={`shop by ${item.name}`}
+          <div
+            className='prod-gallery__item'
+            key={`prod-gallery-item-${item._id}`}
           >
-            {item.price ? <p>${item.price}</p> : ''}
-          </Card>
+            <Card
+              link={`/shop/products/${linkName}/${item._id}`}
+              src={item.images[0]}
+              title={item.name}
+              alt={`shop by ${item.name}`}
+            >
+              {item.price && <p>${item.price}</p>}
+            </Card>
+            {props.showRemoveBtn && (
+              <Button
+                className='btn-tertiary prod-gallery__btn'
+                onClick={props.onRemoveItem.bind(null, item._id)}
+              >
+                Remove
+              </Button>
+            )}
+          </div>
         );
       })}
     </div>

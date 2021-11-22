@@ -1,0 +1,9 @@
+@import '../abstract//variables.scss';
+
+.order-review {
+  grid-column: center-start/center-end;
+
+  &__btn {
+    margin-top: $margin-sm;
+  }
+}
