@@ -31,7 +31,7 @@ const Profile = () => {
   return (
     <>
       <div className='profile'>
-        <h1 className='heading--1 profile__heading'>Customer Profile</h1>
+        <h1 className='heading--1 page-heading'>Customer Profile</h1>
         <div className='profile__summary'>
           <p className='profile__label'>Email: </p>
           <p className='profile__text'>{userData.email}</p>

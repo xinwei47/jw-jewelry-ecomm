@@ -12,18 +12,16 @@ const Orders = () => {
   const {
     sendRequest: sendOrdersRequest,
     data: orders,
-    error: ordersRequestError,
+    // error: ordersRequestError,
   } = useHttp(getOrders);
 
   useEffect(() => {
     sendOrdersRequest(authCtx.token);
   }, [sendOrdersRequest, authCtx.token]);
 
-  console.log(orders);
-
   return (
     <div className='orders'>
-      <h1 className='heading--1 orders__heading'>My Orders</h1>
+      <h1 className='heading--1 page-heading'>My Orders</h1>
       <div className='orders__column-headings'>
         <p className='orders__column-heading'>Order Date</p>
         <p className='orders__column-heading'>Order Number</p>
@@ -31,8 +29,8 @@ const Orders = () => {
         <p className='orders__column-heading'>Details</p>
       </div>
       <ul className='orders__list'>
-        {orders.map((order) => {
-          return <OrderItem item={order} />;
+        {orders.map((order, ind) => {
+          return <OrderItem key={`order-item-${ind}`} item={order} />;
         })}
       </ul>
     </div>

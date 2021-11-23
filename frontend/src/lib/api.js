@@ -1,5 +1,4 @@
 import axios from 'axios';
-import OrderSummary from '../components/OrderSummary';
 
 export const fetchCategories = async () => {
   const { data } = await axios.get('/shop/categories');

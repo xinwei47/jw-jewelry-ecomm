@@ -3,11 +3,6 @@
 .profile {
   grid-column: center-start/center-end;
 
-  &__heading {
-    margin-top: $margin-sm;
-    font-size: 3.2rem !important;
-  }
-
   &__summary {
     display: flex;
     margin-top: $margin-sm;

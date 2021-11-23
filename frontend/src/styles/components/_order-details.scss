@@ -10,13 +10,14 @@
     margin-bottom: $margin-sm;
   }
 
-  &__id {
-    margin-bottom: $margin-xxs;
-  }
+  &__summary-item {
+    &:not(:first-of-type) {
+      margin-top: $margin-xxs;
+    }
 
-  &__id > span,
-  &__date > span {
-    font-weight: 700;
+    & > span {
+      font-weight: 700;
+    }
   }
 
   &__summary {

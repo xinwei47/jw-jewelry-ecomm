@@ -9,7 +9,6 @@ const getUserProfile = (req, res, next) => {
     if (err) return next(err);
     if (!user) return res.status(401).send('Invalid username or password.');
 
-    // console.log(user);
     return res.json(req.user);
   })(req, res, next);
 };
@@ -128,16 +127,19 @@ const postUserOrder = async (req, res, next) => {
     user.orders.push(order);
     await user.save();
   }
-  console.log(order);
   res.json(order);
 };
 
 const getUserOrder = async (req, res, next) => {
-  const order = await Order.findById(req.params.orderId).populate({
-    path: 'orderItems',
-    populate: { path: '_id', model: 'Product' },
-  });
-  res.json(order);
+  try {
+    const order = await Order.findById(req.params.orderId).populate({
+      path: 'orderItems',
+      populate: { path: '_id', model: 'Product' },
+    });
+    res.json(order);
+  } catch (error) {
+    res.status(500).send('Something went wrong... Please try again.');
+  }
 };
 
 const getUserOrders = async (req, res, next) => {

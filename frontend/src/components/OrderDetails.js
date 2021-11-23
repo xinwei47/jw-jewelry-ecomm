@@ -10,7 +10,6 @@ const OrderDetails = (props) => {
   useEffect(() => {
     const getOrder = async (id) => {
       const order = await getSingleOrder(id);
-      console.log(order);
       setOrder(order);
     };
     getOrder(props.orderId);
@@ -22,7 +21,8 @@ const OrderDetails = (props) => {
       shipping,
       shippingAddress,
       billingAddress,
-      user,
+      billingName,
+      // user,
       date,
       email,
       orderItems,
@@ -51,13 +51,17 @@ const OrderDetails = (props) => {
         <div className='order'>
           <div className=''>
             <h2 className='heading--2 order__summary-heading'>Order Summary</h2>
-            <p className='order__id'>
+            <p className='order__summary-item'>
               <span className=''>Order Number: </span>
               {props.orderId}
             </p>
-            <p className='order__date'>
+            <p className='order__summary-item'>
               <span className=''>Order Date: </span>
               {reformattedDate}
+            </p>
+            <p className='order__summary-item'>
+              <span className=''>Email: </span>
+              {email}
             </p>
           </div>
 
@@ -79,6 +83,9 @@ const OrderDetails = (props) => {
 
             <div className='order__summary-section order__billing-to'>
               <h3 className='heading--3 order__section-heading'>Billing To:</h3>
+              <p>
+                {billingName.firstName} {billingName.lastName}
+              </p>
               <p>
                 {billingStreet} {billingCity}
               </p>

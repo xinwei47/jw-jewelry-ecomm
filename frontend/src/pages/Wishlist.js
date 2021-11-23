@@ -39,7 +39,7 @@ const Wishlist = () => {
   return (
     <>
       <div className='wishlist'>
-        <h1 className='heading--1 wishlist__heading'>
+        <h1 className='heading--1 page-heading'>
           My Wishlist ({wishlist.length})
         </h1>
         <ProductsGallery

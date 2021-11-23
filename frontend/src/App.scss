@@ -86,3 +86,8 @@ body {
 .divider {
   color: rgba($color-primary, 0.4);
 }
+
+.page-heading {
+  margin-top: $margin-sm;
+  font-size: 3.2rem !important;
+}

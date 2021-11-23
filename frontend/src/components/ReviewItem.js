@@ -5,20 +5,16 @@ import StarRatingView from './StarRatingView';
 
 import '../styles/components/_review-item.scss';
 import mongoDateReformat from '../lib/reformat-date';
-import { mongo } from 'mongoose';
 
 const ReviewItem = (props) => {
   const authCtx = useContext(AuthContext);
 
   const [reviewDate, setReviewDate] = useState();
 
-  const reformatDate = useCallback(
-    (date) => {
-      const newDate = mongoDateReformat(date);
-      setReviewDate(newDate);
-    },
-    [mongoDateReformat]
-  );
+  const reformatDate = useCallback((date) => {
+    const newDate = mongoDateReformat(date);
+    setReviewDate(newDate);
+  }, []);
 
   useEffect(() => {
     reformatDate(props.review.date);

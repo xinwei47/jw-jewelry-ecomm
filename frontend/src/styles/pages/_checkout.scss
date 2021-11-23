@@ -2,8 +2,11 @@
 
 .checkout {
   grid-column: center-start/center-end;
-  margin-top: $margin-sm;
 
+  &__required {
+    margin-top: $margin-sm;
+    font-weight: 700;
+  }
   &__container {
     display: flex;
 

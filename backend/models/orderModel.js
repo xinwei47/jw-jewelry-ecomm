@@ -53,6 +53,10 @@ const orderSchema = new Schema({
     billingState: { type: String, required: true },
     billingZip: { type: String, required: true },
   },
+  billingName: {
+    firstName: { type: String, required: true },
+    lastName: { type: String, required: true },
+  },
   date: {
     type: Date,
     default: Date.now,

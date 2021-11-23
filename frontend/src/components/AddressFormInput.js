@@ -1,15 +1,8 @@
-import { useRef } from 'react';
-
 const AddressFormInput = (props) => {
-  // const streetInputRef = useRef();
-  // const cityInputRef = useRef();
-  // const stateInputRef = useRef();
-  // const zipInputRef = useRef();
-
   return (
     <>
       <div className='form__group-control'>
-        <label htmlFor={`${props.addressType}Street`}>Street Address</label>
+        <label htmlFor={`${props.addressType}Street`}>Street Address*</label>
         <input
           type='text'
           id={`${props.addressType}Street`}
@@ -19,7 +12,7 @@ const AddressFormInput = (props) => {
         />
       </div>
       <div className='form__group-control'>
-        <label htmlFor={`${props.addressType}City`}>City</label>
+        <label htmlFor={`${props.addressType}City`}>City*</label>
         <input
           type='text'
           id={`${props.addressType}City`}
@@ -29,7 +22,7 @@ const AddressFormInput = (props) => {
         />
       </div>
       <div className='form__group-control'>
-        <label htmlFor={`${props.addressType}State`}>State</label>
+        <label htmlFor={`${props.addressType}State`}>State*</label>
         <input
           type='text'
           id={`${props.addressType}State`}
@@ -39,7 +32,7 @@ const AddressFormInput = (props) => {
         />
       </div>
       <div className='form__group-control'>
-        <label htmlFor={`${props.addressType}Zip`}>Zip Code</label>
+        <label htmlFor={`${props.addressType}Zip`}>Zip Code*</label>
         <input
           type='text'
           id={`${props.addressType}Zip`}
