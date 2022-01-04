@@ -5,10 +5,14 @@
   "main": "server.js",
   "type": "module",
   "scripts": {
+    "start": "node backend/server.js",
     "server": "nodemon backend/server",
     "client": "npm start --prefix frontend",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "data:import": "node backend/data/seeder.js"
+    "data:import": "node backend/data/seeder.js",
+    "build": "cd frontend && npm run build",
+    "install-frontend": "cd client && npm install",
+    "heroku-postbuild": "npm run install-client && npm run build"
   },
   "keywords": [],
   "author": "",

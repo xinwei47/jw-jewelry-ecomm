@@ -23,6 +23,11 @@ app.use(express.urlencoded({ extended: true }));
 // express.json() is a method inbuilt in express to recognize the incoming Request Object as a JSON Object.
 app.use(express.json());
 
+// When in heroku production, use react build folder
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static('frontend/build'));
+}
+
 // configure session
 const secret = process.env.SESSION_SECRET;
 app.use(
@@ -102,6 +107,6 @@ app.use((err, req, res, next) => {
   });
 });
 
-app.listen(8000, () => {
+app.listen(process.env.PORT || 8000, () => {
   console.log(`Server running in ${process.env.NODE_ENV} on port 8000`);
 });

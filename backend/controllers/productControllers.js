@@ -21,7 +21,7 @@ const getProducts = async (req, res, next) => {
       products = await Product.find({ ...paramObj });
     } else {
       const { _id: categoryId } = await Category.findOne({ name: category });
-      console.log(`categoryId: ${categoryId}`);
+      // console.log(`categoryId: ${categoryId}`);
       products = await Product.find({
         category: categoryId,
         ...paramObj,
