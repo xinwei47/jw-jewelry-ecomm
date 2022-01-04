@@ -5,7 +5,7 @@ JW Jewelry is a fictional online store selling daily wear jewlries. In this proj
 
 **Technology used:** MERN Stack (MongoDB, Express, React, Node.js), Figma
 
-**Visit site:** 
+**Visit site:** https://jw-jewelry.herokuapp.com/
 
 ## Features:
 - Browse products by categories
