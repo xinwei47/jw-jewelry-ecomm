@@ -13,9 +13,15 @@
 
   // body padding: 6rem
   &__img-container {
-    max-width: calc((100vw - 16rem) / 3);
     height: calc((100vw - 16rem) / 3);
     max-height: 50rem;
+
+    @media only screen and (max-width: $bp-md) {
+      height: calc((100vw - 8rem) / 3);
+    }
+    @media only screen and (max-width: $bp-sm) {
+      height: calc((100vw - 4rem) / 3);
+    }
   }
 
   &__img {

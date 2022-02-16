@@ -2,6 +2,10 @@
 
 .section {
   margin-top: $margin-xl;
+
+  @media only screen and (max-width: $bp-xxs) {
+    margin-top: $margin-lg;
+  }
 }
 
 .shop-section {
@@ -14,7 +18,11 @@
   &__gallery {
     display: grid;
     grid-template-columns: repeat(3, minmax(min-content, 1fr));
-    gap: 2rem;
+    gap: $grid-gap-xs;
+
+    @media only screen and (max-width: $bp-xxxs) {
+      gap: $grid-gap-xxs;
+    }
   }
 }
 
@@ -37,6 +45,9 @@
   &__content {
     text-align: center;
     grid-column: 3/5;
+    @media only screen and (max-width: $bp-xxxs) {
+      margin-left: $margin-sm;
+    }
   }
   &__heading {
     font-size: 1.6rem;
