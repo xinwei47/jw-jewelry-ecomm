@@ -7,12 +7,9 @@ import { fetchCategories, fetchProducts } from '../lib/api';
 
 import '../styles/pages/_products.scss';
 import useHttp from '../hooks/use-http';
-// import LoadingSpinner from '../components/LoadingSpinner';
 import Error from '../components/Error';
 
 const Products = () => {
-  // const [isLoading, setIsLoading] = useState(false);
-
   const { category } = useParams();
   const history = useHistory();
 
@@ -33,7 +30,6 @@ const Products = () => {
     dataLength: productsCount,
     error: productsError,
   } = useHttp(fetchProducts);
-  // console.log(products);
 
   useEffect(() => {
     productsRequest(category);
@@ -65,25 +61,14 @@ const Products = () => {
     [category, history, productsRequest]
   );
 
-  // ***** NOT WORKING *****
-  // if (productsStatus === 'pending') {
-  //   // setIsLoading(true);
-  //   return <LoadingSpinner />;
-  // }
-
   if (productsStatus === 'error') {
     return (
       <Error errStatus={productsError.status} errMsg={productsError.data} />
     );
   }
 
-  console.log(productsStatus);
-  // console.log(isLoading);
-
   return (
     <>
-      {/* {isLoading && <LoadingSpinner />} */}
-      {/* {!isLoading && ( */}
       <div className='products'>
         <Sidebar
           className='products__sidebar'
@@ -103,7 +88,6 @@ const Products = () => {
           />
         </div>
       </div>
-      {/* )} */}
     </>
   );
 };

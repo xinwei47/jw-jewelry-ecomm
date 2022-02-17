@@ -241,21 +241,23 @@ const Checkout = (props) => {
               </h3>
               <div className='form__section-content'>
                 <div className='form__group-control'>
-                  <label htmlFor='firstName'>First Name</label>
+                  <label htmlFor='firstName'>First Name*</label>
                   <input
                     ref={firstNameInputRef}
                     type='text'
                     id='firstName'
                     name='firstName'
+                    required
                   />
                 </div>
                 <div className='form__group-control'>
-                  <label htmlFor='lastName'>Last Name</label>
+                  <label htmlFor='lastName'>Last Name*</label>
                   <input
                     ref={lastNameInputRef}
                     type='text'
                     id='lastName'
                     name='lastName'
+                    required
                   />
                 </div>
 

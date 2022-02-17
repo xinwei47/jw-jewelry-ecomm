@@ -9,12 +9,18 @@
   grid-template-columns: max-content repeat(3, 1fr);
   gap: $grid-gap-sm;
 
+  @media only screen and (max-width: $bp-xs) {
+    // grid-template-columns: max-content repeat(3, 1fr);
+    gap: $grid-gap-xxs;
+  }
+
   &__sidebar {
     margin-top: $margin-sm;
     max-height: 100vh;
     position: sticky;
     top: 4rem;
   }
+
   &__content {
     grid-column: 2/5;
   }
@@ -27,8 +33,12 @@
   }
   &__gallery {
     display: grid;
-    // grid-template-columns: repeat(auto-fit, 280px);
     grid-template-columns: repeat(3, minmax(min-content, 1fr));
     gap: $grid-gap-xs;
+
+    @media only screen and (max-width: $bp-xs) {
+      grid-template-columns: repeat(2, minmax(min-content, 1fr));
+      gap: $grid-gap-xxs;
+    }
   }
 }

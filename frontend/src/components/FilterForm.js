@@ -70,7 +70,7 @@ const FilterForm = (props) => {
       })}
       <div className='filter-form__actions'>
         <Button className='btn-secondary' type='submit'>
-          Apply Filters
+          Apply
         </Button>
 
         <Button

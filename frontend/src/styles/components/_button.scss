@@ -32,13 +32,18 @@
   padding: $padding-xxs $padding-md;
   text-transform: uppercase;
 
-  &:hover {
+  @media only screen and (max-width: $bp-lg) {
+    padding: $padding-xxs $padding-sm;
+  }
+
+  @media only screen and (hover: hover) {
     color: $color-white;
     background-color: $color-primary;
   }
 
-  @media only screen and (max-width: $bp-lg) {
-    // padding: $padding-xxs $padding-sm;
+  @media only screen and (hover: none) {
+    color: $color-black;
+    background-color: $color-white;
   }
 }
 
@@ -48,7 +53,11 @@
   text-underline-offset: 4px;
   text-transform: uppercase;
 
-  &:hover {
+  @media only screen and (hover: hover) {
+    color: $color-secondary;
+  }
+
+  @media only screen and (hover: none) {
     color: $color-secondary;
   }
 }
