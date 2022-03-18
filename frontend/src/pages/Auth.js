@@ -51,7 +51,6 @@ const Auth = () => {
       setErrMsg(error.response.data);
     }
   };
-  console.log(errMsg);
   return (
     <>
       <div className='auth'>

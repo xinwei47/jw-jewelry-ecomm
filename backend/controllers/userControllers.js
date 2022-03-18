@@ -22,7 +22,7 @@ const loginUser = (req, res, next) => {
         .status(401)
         .send('Invalid email or password. Please try again.');
     }
-    req.logIn(user, function (err) {
+    req.login(user, function (err) {
       if (err) {
         return next(err);
       }
@@ -37,7 +37,6 @@ const loginUser = (req, res, next) => {
 
 const registerUser = async (req, res, next) => {
   const { email, password } = req.body;
-  // console.log(email);
   const user = new User({ email });
   try {
     const registerUser = await User.register(user, password);
