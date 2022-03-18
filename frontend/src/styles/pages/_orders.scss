@@ -19,11 +19,10 @@
   }
 
   &__text-box {
-    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    transform: translateY(-20%);
+    transform: translateY(20rem);
   }
 
   &__text {
